@@ -7,9 +7,15 @@
 {
   imports =
     [ # Include the results of the hardware scan.
+      "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/microsoft/surface/surface-pro-intel"
       ./hardware-configuration.nix
       ./users/mustachio.nix
     ];
+
+  nixpkgs.config.allowUnfree = true;
+
+  #microsoft-surface.ipts.enable = true;
+  #config.microsoft-surface.surface-control.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -84,7 +90,7 @@
   users.users.mustachio = {
     isNormalUser = true;
     description = "Mustachio";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [ "networkmanager" "wheel" "surface-control" ];
     shell = pkgs.zsh;
   };
 
@@ -101,6 +107,7 @@
       vscode = vscodium;
       vscodeExtensions = with vscode-extensions; [
         bbenoist.nix
+        eamodio.gitlens
       ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [];
     })
   #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
