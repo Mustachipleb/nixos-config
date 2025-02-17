@@ -1,7 +1,3 @@
-# Edit this configuration file to define what should be installed on
-# your system. Help is available in the configuration.nix(5) man page, on
-# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
-
 { config, lib, pkgs, ... }:
 
 {
@@ -17,11 +13,6 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  #boot.extraModulePackages = [ config.boot.kernelPackages.rtl8821ce ];
-  #boot.blacklistedKernelModules = [
-  #  "rtw_8821ce"
-  #];
 
   networking.hostName = "nixos-box1"; # Define your hostname.
   # Pick only one of the below networking options.
@@ -45,7 +36,7 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 80 443 8443 ];
+    allowedTCPPorts = [ 80 443 8280 8281 2375 ];
   };
 
   programs.zsh.enable = true;
@@ -55,6 +46,12 @@
     rootless = {
       enable = true;
       setSocketVariable = true;
+    };
+    daemon.settings = {
+      hosts = [
+        "unix:///var/run/docker.sock"
+        "tcp://0.0.0.0:2375"
+      ];
     };
   };
 
@@ -69,7 +66,6 @@
     shell = pkgs.zsh;
   };
 
-  services.vscode-server.enable = true;
   home-manager.users.mustachio = { pkgs, ... }: {
     home.packages = with pkgs; [
       zsh
@@ -129,6 +125,55 @@
   };
 
   programs.ssh.startAgent = true;
+
+  services.samba = {
+    enable = true;
+    securityType = "user";
+    openFirewall = true;
+    extraConfig = ''
+      workgroup = WORKGROUP
+      server string = smbnix
+      netbios name = smbnix
+      security = user 
+      #use sendfile = yes
+      #max protocol = smb2
+      # note: localhost is the ipv6 localhost ::1
+      hosts allow = 192.168.1. 192.168.0. 127.0.0.1 localhost
+      hosts deny = 0.0.0.0/0
+      ntlm auth = true
+    '';
+    shares = {
+      home = {
+        "path" = "/home/mustachio";
+        "browseable" = "yes";
+        "read only" = "no";
+        "guest ok" = "no";
+        "create mask" = "0644";
+        "directory mask" = "0755";
+        "force user" = "mustachio";
+        "force group" = "users";
+      };
+    };
+  };
+
+  systemd.services.compose = {
+    script = ''
+      docker compose -f /home/mustachio/docker/compose.yml up --remove-orphans
+    '';
+    wantedBy = ["multi-user.target"];
+    # If you use podman
+    # after = ["podman.service" "podman.socket"];
+    # If you use docker
+    after = ["docker.service" "docker.socket"];
+    path = [ pkgs.docker ];
+  };
+
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
