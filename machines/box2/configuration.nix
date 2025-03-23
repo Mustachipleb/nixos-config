@@ -4,6 +4,9 @@
 
 { config, lib, pkgs, ... }:
 
+let
+  vars = import ./vars.nix;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -81,7 +84,6 @@
 
   networking.hostName = "nixos-box2";
   networking.networkmanager.enable = true;
-  
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -101,10 +103,9 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.libinput.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mustachio = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" ];
 
     home = "/home/mustachio";
 
@@ -114,40 +115,21 @@
 
     shell = pkgs.zsh;
   };
-  
+
   programs.zsh.enable = true;
 
-  home-manager.users.mustachio = { pkgs, ... }: {
-    home.packages = with pkgs; [
-      zsh
-      oh-my-zsh
-      starship
-      meslo-lgs-nf
-    ];
-
-    programs.zsh = {
-      enable = true;
-      oh-my-zsh = {
-        enable = true;
-      };
-      shellAliases = {
-        rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/nixos-config/machines/box2/configuration.nix";
-      };
+  home-manager = {
+    users = {
+      mustachio =
+        let
+          common = import ../../common/home.nix { inherit config pkgs vars; };
+        in
+        common // {
+          home.stateVersion = "24.11";
+          # Additional machine-specific overrides for mustachio
+        };
     };
-
-    programs.starship = {
-      enable = true;
-    };
-
-    programs.git = {
-      enable = true;
-      userName = "Mustachio";
-      userEmail = "mustachio@dragonlegion.be";
-    };
-
-    home.stateVersion = "24.11";
   };
-
 
   services.openssh = {
     enable = true;
