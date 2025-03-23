@@ -4,11 +4,16 @@
 
 { config, lib, pkgs, ... }:
 
+let
+  vars = import ./vars.nix;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       <home-manager/nixos>
+      ../../common/ssh.nix
+      ../../common/powermgmt.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
@@ -52,112 +57,39 @@
   # Enable the X11 windowing system.
   # services.xserver.enable = true;
 
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-
-  services.thermald.enable = true;
-  services.tlp = {
-    enable = true;
-    settings = {
-      CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
-
-      CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
-      CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-
-      CPU_MIN_PERF_ON_AC = 0;
-      CPU_MAX_PERF_ON_AC = 100;
-      CPU_MIN_PERF_ON_BAT = 0;
-      CPU_MAX_PERF_ON_BAT = 20;
-
-      #Optional helps save long term battery health
-      START_CHARGE_THRESH_BAT0 = 40; # 40 and below it starts to charge
-      STOP_CHARGE_THRESH_BAT0 = 80; # 80 and above it stops charging
-
-    };
-  };
+  services.powerManagement.enable = true;
 
   networking.hostName = "nixos-box2";
   networking.networkmanager.enable = true;
-  
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
-  # Enable sound.
-  # hardware.pulseaudio.enable = true;
-  # OR
-  # services.pipewire = {
-  #   enable = true;
-  #   pulse.enable = true;
-  # };
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.libinput.enable = true;
-
-  # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.mustachio = {
-    isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-
-    home = "/home/mustachio";
-
-    openssh.authorizedKeys.keys = [
-      "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDyLrBCA5c7OEX1Shziwq/jSoZTMeES1oaHt6Pibf/vLZaQf0EJQfFc41UUyHeYpLrgpQmy0r+Zwzq65zAz6Zo+wk6Hs1xZvaYf35jKsS/IXfkIU2TriRxYxXA4Mrh/tS3aWGMd7dO5/U6apGen2eVpb2S9mKxOpdrnU6vIMrRFqcNhcYTWEoy+fxXfNeUliiOXqT63ImOTLEudSWCGbmvO4ljEHGr9s1DqF6An0HvAhNRwlI1mR30oTcblfBX4qTDeB7svkBp+tpEREbSlU/2Vx6RO+fNMvBaqDQx0a4+ic5Udo6zbZCx/2+RM0eRFuk5R8sNuE6tULbF1FC5yNPNODKoRbqbYqqZLOYtrY6YV0C63Ixu8bY64/+4l9LBDacstQcn5Puj6ibqN2AM19TA+8imqfWVe1cX9sz/GZY/UBsxrR2X94l5jTNWkvN9KERVW+kYwyC4XMdZapA9EhD+u+I6Wd6mUeD4Z6m9D1LWGUT2mfQ7NQMFEWpwWw1ZHxx2ul7ACcbBZ21m56wNZxChgKaVh0yomGL7BKsEEehSRRm58hBvx9z7fSp92kDLfGk7f8y4rPBsxJ0c6nFPrN75OCJlG2/++IWhL3oQLUTIPRMqYieOGTv5WQbFpo8CWWfltJvOIuiz1ZxZytHBCY0MvKtIU6Papz00RRRyyIB75XQ== Laptop SSH Key"
-    ];
-
-    shell = pkgs.zsh;
+  users.users = {
+    mustachio =
+      let
+        common = import ../../common/user/wheel.nix { inherit config pkgs vars; };
+      in
+      common // {
+        home = "/home/mustachio";
+      };
   };
-  
+
   programs.zsh.enable = true;
 
-  home-manager.users.mustachio = { pkgs, ... }: {
-    home.packages = with pkgs; [
-      zsh
-      oh-my-zsh
-      starship
-      meslo-lgs-nf
-    ];
-
-    programs.zsh = {
-      enable = true;
-      oh-my-zsh = {
-        enable = true;
-      };
-      shellAliases = {
-        rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/nixos-config/machines/box2/configuration.nix";
-      };
+  home-manager = {
+    users = {
+      mustachio =
+        let
+          common = import ../../common/home.nix { inherit config pkgs vars; };
+        in
+        common // {
+          home.stateVersion = "24.11";
+        };
     };
-
-    programs.starship = {
-      enable = true;
-    };
-
-    programs.git = {
-      enable = true;
-      userName = "Mustachio";
-      userEmail = "mustachio@dragonlegion.be";
-    };
-
-    home.stateVersion = "24.11";
   };
 
-
-  services.openssh = {
-    enable = true;
-    # require public key authentication for better security
-    settings.PasswordAuthentication = false;
-    settings.KbdInteractiveAuthentication = false;
-    #settings.PermitRootLogin = "yes";
-  };
-
-  programs.ssh.startAgent = true;
 
   # programs.firefox.enable = true;
 
