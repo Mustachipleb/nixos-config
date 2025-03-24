@@ -4,10 +4,10 @@ let
   # Shorter name to access final settings a
   # user of hello.nix module HAS ACTUALLY SET.
   # cfg is a typical convention.
-  cfg = config.services.powerManagement;
+  cfg = config.services.drlg.powerManagement;
 in {
   # Declare what settings a user of this "hello.nix" module CAN SET.
-  options.services.powerManagement = {
+  options.services.drlg.powerManagement = {
     enable = mkEnableOption "Power Management";
     isLaptop = mkOption {
       type = types.bool;

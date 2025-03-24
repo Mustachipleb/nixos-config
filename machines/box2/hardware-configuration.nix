@@ -11,11 +11,13 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "sd_mod" "sdhci_pci" ];
   boot.initrd.kernelModules = [ ];
   boot.initrd.systemd.enable = true;
-  boot.initrd.services.swraid = {
+
+  boot.swraid = {
     enable = true;
 
     mdadmConf = ''
       ARRAY /dev/md0 level=raid1 num-devices=2 metadata=1.2 UUID=4d588523:1c5c2838:64e014f7:fe70186d devices=/dev/sda3,/dev/sdb3
+      MAILADDR mustachio@dragonlegion.be
     '';
   };
 

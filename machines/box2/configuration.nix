@@ -10,6 +10,8 @@ in
       <home-manager/nixos>
       ../../common/ssh.nix
       ../../common/powermgmt.nix
+      ../../common/docker.nix
+      ../../common/network.nix
     ];
 
   boot.loader = {
@@ -33,14 +35,21 @@ in
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
 
-  services.powerManagement.enable = true;
-
   networking.hostName = "nixos-box2";
   networking.networkmanager.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
+
+  services.drlg = {
+    docker.enable = true;
+    powerManagement.enable = true;
+    networking = {
+      hostname = vars.hostName;
+      ipAddress = vars.ipAddress;
+    };
+  };
 
   users.users = {
     mustachio =
