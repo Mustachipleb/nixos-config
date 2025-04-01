@@ -12,6 +12,7 @@ in
       ../../common/powermgmt.nix
       ../../common/docker.nix
       ../../common/network.nix
+      ../../common/gpu/nvidia.nix
     ];
 
   boot.loader = {
@@ -43,12 +44,17 @@ in
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   services.drlg = {
-    docker.enable = true;
+    docker = {
+      enable = true;
+      cdi = true;
+    };
     powerManagement.enable = true;
     networking = {
       hostname = vars.hostName;
       ipAddress = vars.ipAddress;
+      gateway = vars.gateway;
     };
+    graphics.enable = true;
   };
 
   users.users = {

@@ -36,6 +36,10 @@ in {
       type = types.listOf types.int;
       default = [];
     };
+    gateway = mkOption {
+      type = types.str;
+      default = null;
+    };
   };
 
   config = {
@@ -58,10 +62,10 @@ in {
           };
         };
       };
-      # defaultGateway = {
-      #   address = cfg.gateway;
-      #   interface = cfg.networkInterface;
-      # };
+      defaultGateway = {
+        address = cfg.gateway;
+        interface = cfg.networkInterface;
+      };
       firewall.enable = true;
       firewall.allowedTCPPorts = cfg.allowedTCPPorts;
       firewall.allowedUDPPorts = cfg.allowedUDPPorts;
