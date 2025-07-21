@@ -28,6 +28,8 @@ in
     };
   };
 
+  programs.nix-ld.enable = true;
+
   # networking.hostName = "nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -47,6 +49,7 @@ in
     docker = {
       enable = true;
       cdi = true;
+      rootless = false;
     };
     powerManagement.enable = true;
     networking = {
@@ -88,6 +91,7 @@ in
     wget
     pkgs.sshfs
     git
+    git-crypt
   ];
 
   # Open ports in the firewall.

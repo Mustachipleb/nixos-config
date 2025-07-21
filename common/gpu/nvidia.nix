@@ -14,6 +14,8 @@ in {
       "nvidia-settings"
     ];
 
+    hardware.nvidia-container-toolkit.enable = true;
+
     # Enable OpenGL
     hardware.graphics = {
       enable = true;

@@ -17,7 +17,7 @@ This repository contains the NixOS configuration for the machine `box2`.
 To apply the configuration, run the following command:
 
 ```sh
-sudo nixos-rebuild switch
+rebuild
 ```
 
 For more information on NixOS configuration, visit the [NixOS Manual](https://nixos.org/manual/nixos/stable/).
