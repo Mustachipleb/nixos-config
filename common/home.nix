@@ -27,4 +27,9 @@
     userName = "Mustachio";
     userEmail = "mustachio@dragonlegion.be";
   };
+
+  programs.ssh = {
+    enable = true;
+    addKeysToAgent = "yes";
+  };
 }

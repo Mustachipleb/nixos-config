@@ -2,6 +2,7 @@
 
 let
   vars = import ./vars.nix;
+  agenixVersion = "0.15.0";
 in
 {
   imports =
@@ -13,6 +14,8 @@ in
       ../../common/docker.nix
       ../../common/network.nix
       ../../common/gpu/nvidia.nix
+      ../../../dragonlegion.be/docker-compose.nix
+      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
     ];
 
   boot.loader = {
@@ -56,9 +59,16 @@ in
       hostname = vars.hostName;
       ipAddress = vars.ipAddress;
       gateway = vars.gateway;
+      allowedTCPPorts = [
+        3098
+        3099
+        53
+      ];
     };
     graphics.enable = true;
   };
+
+  age.secrets."dragonlegion.be.age".file = ../../common/secrets/dragonlegion.be.age;
 
   users.users = {
     mustachio =
@@ -92,13 +102,9 @@ in
     pkgs.sshfs
     git
     git-crypt
+    compose2nix
+    (pkgs.callPackage "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix" {})
   ];
-
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
