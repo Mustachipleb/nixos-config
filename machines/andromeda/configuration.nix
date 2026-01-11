@@ -12,7 +12,15 @@
       ./modules/browser.nix
     ];
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 7d";
+  };
+
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
+
+  services.fstrim.enable = true;
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
