@@ -75,22 +75,27 @@ let
     spotify
     discord
     gitkraken
-
-    whitesur-gtk-theme
-    whitesur-icon-theme
-    whitesur-cursors
-
-    gnomeExtensions.user-themes
-    gnomeExtensions.dash-to-dock
-    gnomeExtensions.blur-my-shell
-    gnomeExtensions.show-desktop-button
-    gnomeExtensions.search-light
-    gnomeExtensions.gnome-40-ui-improvements
   ];
 in
 {
+  imports = [
+    ./modules/gnome.nix
+  ];
+
   home.username = "mustachio";
   home.homeDirectory = "/home/mustachio";
+
+  xdg.mimeApps = {
+    enable = true;
+
+    defaultApplications = {
+      "text/html" = "librewolf.desktop";
+      "x-scheme-handler/http" = "librewolf.desktop";
+      "x-scheme-handler/https" = "librewolf.desktop";
+      "x-scheme-handler/about" = "librewolf.desktop";
+      "x-scheme-handler/unknown" = "librewolf.desktop";
+    };
+  };
 
   # Import files from the current configuration directory into the Nix store,
   # and create symbolic links pointing to those store files in the Home directory.
@@ -114,23 +119,13 @@ in
     editorPackages
     ++ miscPackages;
 
-  xdg.mimeApps = {
-    enable = true;
-
-    defaultApplications = {
-      "text/html" = "librewolf.desktop";
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
-      "x-scheme-handler/about" = "librewolf.desktop";
-      "x-scheme-handler/unknown" = "librewolf.desktop";
-    };
-  };
-
-  # basic configuration of git, please change to your own
+  # basic configuration of git
   programs.git = {
     enable = true;
-    userName = "Nicolas Van Damme";
-    userEmail = "nicolas.van.damme2@hotmail.com";
+    settings = {
+      user.name = "Nicolas Van Damme";
+      user.email = "nicolas.van.damme2@hotmail.com";
+    };
   };
 
   # starship - an customizable prompt for any shell
@@ -164,64 +159,6 @@ in
     enable = true;
     enableCompletion = true;
   };
-
-  dconf = {
-    enable = true;
-    settings = {
-      "org/gnome/desktop/interface" = {
-        color-scheme = "prefer-dark";
-        gtk-theme = "WhiteSur-Dark-solid";
-        icon-theme = "WhiteSur-Dark";
-        cursor-theme = "WhiteSur-cursors";
-      };
-      "org/gnome/shell" = {
-        disable-user-extensions = false;
-        enabled-extensions = with pkgs.gnomeExtensions; [
-          user-themes.extensionUuid
-          dash-to-dock.extensionUuid
-          show-desktop-button.extensionUuid
-          blur-my-shell.extensionUuid
-          search-light.extensionUuid
-          gnome-40-ui-improvements.extensionUuid
-        ];
-        favorite-apps = [
-          "librewolf.desktop"
-          "spotify.desktop"
-          "org.jetbrains.idea.WebStorm.desktop"
-          "org.gnome.Terminal.desktop"
-          "org.gnome.TextEdit.desktop"
-          "org.gnome.Settings.desktop"
-          "nixos-manual.desktop"
-        ];
-      };
-      "org/gnome/shell/extensions/user-theme" = {
-         name = "WhiteSur-Dark-solid";
-      };
-    };
-  };
-
-#  gtk = with pkgs; {
-#    enable = true;
-#    iconTheme = {
-#      name = "WhiteSur-dark";
-#      package = whitesur-icon-theme;
-#    };
-#    theme = {
-#      name = "WhiteSur-dark";
-#      package = whitesur-gtk-theme;
-#    };
-#    #cursorTheme = {
-#    #  name = "Bibata-Modern-Ice";
-#    #  package = bibata-cursors;
-#    #};
-#    gtk3.extraConfig = {
-#      gtk-application-prefer-dark-theme = 1;
-#    };
-#    gtk4.extraConfig = {
-#      gtk-application-prefer-dark-theme = 1;
-#    };
-#  };
-
 
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage

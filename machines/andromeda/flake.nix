@@ -29,9 +29,9 @@
           home-manager.useGlobalPkgs = true;
           home-manager.useUserPackages = true;
 
-          home-manager.users.mustachio = import ./home.nix;
+          home-manager.users.mustachio = import ./users/mustachio.nix;
 
-          # Optionally, use home-manager.extraSpecialArgs to pass arguments to home.nix
+          # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
           home-manager.extraSpecialArgs = {
             inherit system nix-jetbrains-plugins;
           };

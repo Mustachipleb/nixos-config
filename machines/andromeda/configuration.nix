@@ -4,20 +4,12 @@
 
 { config, pkgs, ... }:
 
-let
-  lock-false = {
-    Value = false;
-    Status = "locked";
-  };
-  lock-true = {
-    Value = true;
-    Status = "locked";
-  };
-in
 {
   imports =
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
+      ./modules/gnome.nix
+      ./modules/browser.nix
     ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -42,22 +34,6 @@ in
   # Select internationalisation properties.
   i18n.defaultLocale = "en_GB.UTF-8";
 
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "us";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
   # Enable sound with pipewire.
   services.pulseaudio.enable = false;
   security.rtkit.enable = true;
@@ -74,10 +50,10 @@ in
     #media-session.enable = true;
   };
 
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
+  # Enable CUPS to print documents.
+  services.printing.enable = true;
 
-  # Define a user account. Don't forget to set a password with ‘passwd’.
+  # Define a user account.
   users.users.mustachio = {
     isNormalUser = true;
     description = "Mustachio";
@@ -88,75 +64,6 @@ in
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSFk3GHJeubHKHyYk8VFErH5EwMk5Kf9BRP5KHq1xVr andromeda@dragonlegion.be"
     ];
-  };
-
-  programs.firefox = {
-    enable = true;
-    package = pkgs.librewolf;
-    policies = {
-      DisableTelemetry = true;
-      DisableFirefoxStudies = true;
-      EnableTrackingProtection = {
-        Value= true;
-        Locked = true;
-        Cryptomining = true;
-        Fingerprinting = true;
-      };
-      DisablePocket = true;
-      DisableFirefoxAccounts = true;
-      DisableAccounts = true;
-      DisableFirefoxScreenshots = true;
-      DontCheckDefaultBrowser = true;
-      DisplayBookmarksToolbar = "always";
-      SearchBar = "unified";
-      Preferences = {
-        "cookiebanners.service.mode.privateBrowsing" = 2; # Block cookie banners in private browsing
-        "cookiebanners.service.mode" = 2; # Block cookie banners
-        "privacy.donottrackheader.enabled" = true;
-        "privacy.fingerprintingProtection" = true;
-        "privacy.resistFingerprinting" = true;
-        "privacy.trackingprotection.emailtracking.enabled" = true;
-        "privacy.trackingprotection.enabled" = true;
-        "privacy.trackingprotection.fingerprinting.enabled" = true;
-        "privacy.trackingprotection.socialtracking.enabled" = true;
-        "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
-        "extensions.pocket.enabled" = lock-false;
-        "extensions.screenshots.disabled" = lock-true;
-        "browser.topsites.contile.enabled" = lock-false;
-        "browser.formfill.enable" = lock-false;
-        "browser.search.suggest.enabled" = lock-true;
-        "browser.search.suggest.enabled.private" = lock-true;
-        "browser.urlbar.suggest.searches" = lock-false;
-        "browser.urlbar.showSearchSuggestionsFirst" = lock-true;
-        "browser.newtabpage.activity-stream.feeds.section.topstories" = lock-false;
-        "browser.newtabpage.activity-stream.feeds.snippets" = lock-false;
-        "browser.newtabpage.activity-stream.section.highlights.includePocket" = lock-false;
-        "browser.newtabpage.activity-stream.section.highlights.includeBookmarks" = lock-false;
-        "browser.newtabpage.activity-stream.section.highlights.includeDownloads" = lock-false;
-        "browser.newtabpage.activity-stream.section.highlights.includeVisited" = lock-false;
-        "browser.newtabpage.activity-stream.showSponsored" = lock-false;
-        "browser.newtabpage.activity-stream.system.showSponsored" = lock-false;
-        "browser.newtabpage.activity-stream.showSponsoredTopSites" = lock-false;
-        "browser.policies.runOncePerModification.setDefaultSearchEngine" = "Kagi";
-        "sidebar.verticalTabs" = lock-true;
-      };
-      ExtensionSettings = {
-        "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
-        "uBlock0@raymondhill.net" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
-          installation_mode = "force_installed";
-        };
-        # Bitwarden
-        "{446900e4-71c2-419f-a6a7-df9c091e268b}" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
-          installation_mode = "force_installed";
-        };
-        "search@kagi.com" = {
-          install_url = "https://addons.mozilla.org/firefox/downloads/latest/kagi-search-for-firefox/latest.xpi";
-          installation_mode = "force_installed";
-        };
-      };
-    };
   };
 
   # Allow unfree packages
