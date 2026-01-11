@@ -61,7 +61,8 @@
   # Enable CUPS to print documents.
   services.printing.enable = true;
 
-  # Define a user account.
+  users.defaultUserShell = pkgs.zsh;
+  programs.zsh.enable = true;
   users.users.mustachio = {
     isNormalUser = true;
     description = "Mustachio";
