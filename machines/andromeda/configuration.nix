@@ -122,8 +122,8 @@
     librewolf
     gnome-tweaks
     sshfs
-    nixfmt
-    pre-commit
+    nixfmt # Nix file formatter
+    nil # Language server to use in IDE
   ];
 
   hardware.graphics = {
