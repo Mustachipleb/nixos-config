@@ -18,10 +18,26 @@
     enable = true;
     settings = {
       "org/gnome/desktop/interface" = {
+        accent-color= "yellow";
         color-scheme = "prefer-dark";
         gtk-theme = "WhiteSur-Dark-solid";
         icon-theme = "WhiteSur-Dark";
         cursor-theme = "WhiteSur-cursors";
+      };
+      "org/gnome/desktop/peripherals/mouse" = {
+        accel-profile = "flat";
+        natural-scroll = false;
+        speed = 0.0;
+      };
+      "org/gnome/settings-daemon/plugins/power" = {
+        sleep-inactive-ac-timeout = 3600;
+        sleep-inactive-ac-type = "suspend";
+      };
+      "org/gnome/shell/extensions/search-light" = {
+        shortcut-search = [ "<Control>space" ];
+      };
+      "org/gnome/shell/extensions/show-desktop-button" = {
+        indicator-position = "LEFT";
       };
       "org/gnome/shell" = {
         disable-user-extensions = false;
@@ -35,10 +51,10 @@
         ];
         favorite-apps = [
           "librewolf.desktop"
+          "steam.desktop"
           "spotify.desktop"
-          "org.jetbrains.idea.WebStorm.desktop"
-          "org.gnome.Terminal.desktop"
-          "org.gnome.TextEdit.desktop"
+          "webstorm.desktop"
+          "org.gnome.Console.desktop"
           "org.gnome.Settings.desktop"
           "nixos-manual.desktop"
         ];
