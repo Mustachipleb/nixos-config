@@ -6,6 +6,11 @@ let
   ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2025.3.1";
   ideaPlugins = map (p: ideaPluginBase.${p}) [
     "nix-idea"
+    "org.jetbrains.junie"
+    "zielu.gittoolbox"
+    "com.intellij.ml.llm"
+    "izhangzhihao.rainbow.brackets"
+    "monokai-pro"
   ];
   editorPackages = with pkgs; [
     (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.webstorm ideaPlugins)
