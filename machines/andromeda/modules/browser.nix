@@ -18,7 +18,7 @@ in
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
       EnableTrackingProtection = {
-        Value= true;
+        Value = true;
         Locked = true;
         Cryptomining = true;
         Fingerprinting = true;
@@ -40,7 +40,10 @@ in
         "privacy.trackingprotection.enabled" = true;
         "privacy.trackingprotection.fingerprinting.enabled" = true;
         "privacy.trackingprotection.socialtracking.enabled" = true;
-        "browser.contentblocking.category" = { Value = "strict"; Status = "locked"; };
+        "browser.contentblocking.category" = {
+          Value = "strict";
+          Status = "locked";
+        };
         "extensions.pocket.enabled" = lock-false;
         "extensions.screenshots.disabled" = lock-true;
         "browser.topsites.contile.enabled" = lock-false;

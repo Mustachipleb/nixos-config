@@ -1,11 +1,17 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   # Shorter name to access final settings a
   # user of hello.nix module HAS ACTUALLY SET.
   # cfg is a typical convention.
   cfg = config.services.drlg.powerManagement;
-in {
+in
+{
   # Declare what settings a user of this "hello.nix" module CAN SET.
   options.services.drlg.powerManagement = {
     enable = mkEnableOption "Power Management";

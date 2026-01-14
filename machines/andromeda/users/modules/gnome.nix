@@ -18,7 +18,7 @@
     enable = true;
     settings = {
       "org/gnome/desktop/interface" = {
-        accent-color= "yellow";
+        accent-color = "yellow";
         color-scheme = "prefer-dark";
         gtk-theme = "WhiteSur-Dark-solid";
         icon-theme = "WhiteSur-Dark";
@@ -60,7 +60,7 @@
         ];
       };
       "org/gnome/shell/extensions/user-theme" = {
-         name = "WhiteSur-Dark-solid";
+        name = "WhiteSur-Dark-solid";
       };
     };
   };

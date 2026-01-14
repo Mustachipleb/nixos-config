@@ -14,29 +14,37 @@
     nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
   };
 
-  outputs = inputs@{ nixpkgs, home-manager, nix-jetbrains-plugins, ... }:
-  let
-    system = "x86_64-linux";
-  in {
-    nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
-      inherit system;
+  outputs =
+    inputs@{
+      nixpkgs,
+      home-manager,
+      nix-jetbrains-plugins,
+      ...
+    }:
+    let
+      system = "x86_64-linux";
+    in
+    {
+      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
+        inherit system;
 
-      modules = [
-        ./configuration.nix
+        modules = [
+          ./configuration.nix
 
-        home-manager.nixosModules.home-manager
-        {
-          home-manager.useGlobalPkgs = true;
-          home-manager.useUserPackages = true;
+          home-manager.nixosModules.home-manager
+          {
+            home-manager.useGlobalPkgs = true;
+            home-manager.useUserPackages = true;
 
-          home-manager.users.mustachio = import ./users/mustachio.nix;
+            home-manager.users.mustachio = import ./users/mustachio.nix;
 
-          # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
-          home-manager.extraSpecialArgs = {
-            inherit system nix-jetbrains-plugins;
-          };
-        }
-      ];
+            # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
+            home-manager.extraSpecialArgs = {
+              inherit system nix-jetbrains-plugins;
+            };
+          }
+        ];
+      };
     };
-  };
 }

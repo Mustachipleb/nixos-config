@@ -1,22 +1,27 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   vars = import ./vars.nix;
   agenixVersion = "0.15.0";
 in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      <home-manager/nixos>
-      ../../common/ssh.nix
-      ../../common/powermgmt.nix
-      ../../common/docker.nix
-      ../../common/network.nix
-      ../../common/gpu/nvidia.nix
-      ../../../dragonlegion.be/docker-compose.nix
-      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    <home-manager/nixos>
+    ../../common/ssh.nix
+    ../../common/powermgmt.nix
+    ../../common/docker.nix
+    ../../common/network.nix
+    ../../common/gpu/nvidia.nix
+    ../../../dragonlegion.be/docker-compose.nix
+    "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
+  ];
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -25,9 +30,9 @@ in
       efiSysMountPoint = "/boot/efi"; # ← use the same mount point here.
     };
     grub = {
-       efiSupport = true;
-       #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
-       device = "nodev";
+      efiSupport = true;
+      #efiInstallAsRemovable = true; # in case canTouchEfiVariables doesn't work for your system
+      device = "nodev";
     };
   };
 
@@ -75,7 +80,8 @@ in
       let
         common = import ../../common/user/wheel.nix { inherit config pkgs vars; };
       in
-      common // {
+      common
+      // {
         home = "/home/mustachio";
       };
   };
@@ -88,7 +94,8 @@ in
         let
           common = import ../../common/home.nix { inherit config pkgs vars; };
         in
-        common // {
+        common
+        // {
           home.stateVersion = "24.11";
         };
     };
@@ -103,7 +110,10 @@ in
     git
     git-crypt
     compose2nix
-    (pkgs.callPackage "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix" {})
+    (pkgs.callPackage
+      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix"
+      { }
+    )
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system
@@ -131,4 +141,3 @@ in
   system.stateVersion = "24.11"; # Did you read the comment?
 
 }
-

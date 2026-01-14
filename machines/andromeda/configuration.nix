@@ -5,12 +5,12 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      ./modules/gnome.nix
-      ./modules/browser.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    ./modules/gnome.nix
+    ./modules/browser.nix
+  ];
 
   nix.gc = {
     automatic = true;
@@ -18,7 +18,10 @@
     options = "--delete-older-than 7d";
   };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   services.fstrim.enable = true;
 
@@ -94,9 +97,12 @@
   users.users.mustachio = {
     isNormalUser = true;
     description = "Mustachio";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
     packages = with pkgs; [
-    #  thunderbird
+      #  thunderbird
     ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSFk3GHJeubHKHyYk8VFErH5EwMk5Kf9BRP5KHq1xVr andromeda@dragonlegion.be"
@@ -116,6 +122,8 @@
     librewolf
     gnome-tweaks
     sshfs
+    nixfmt
+    pre-commit
   ];
 
   hardware.graphics = {
@@ -123,7 +131,7 @@
   };
 
   # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = [ "nvidia" ];
 
   hardware.nvidia = {
     # Modesetting is required.
@@ -148,7 +156,7 @@
     open = true;
 
     # Enable the Nvidia settings menu,
-	  # accessible via `nvidia-settings`.
+    # accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
