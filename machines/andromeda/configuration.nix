@@ -29,12 +29,46 @@
   networking.hostName = "andromeda"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
   # Enable networking
   networking.networkmanager.enable = true;
+
+  # Define the mount unit
+  systemd.mounts = [
+    {
+      description = "SSHFS mount for Triangulum";
+      what = "mustachio@192.168.1.10:/home/mustachio";
+      where = "/mnt/triangulum";
+      type = "sshfs";
+      options = "allow_other,IdentityFile=/mnt/.ssh/id_rsa,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null";
+      unitConfig = {
+        DefaultDependencies = "no";
+      };
+    }
+    {
+      description = "SSHFS mount for Pinwheel";
+      what = "mustachio@192.168.1.11:/home/mustachio";
+      where = "/mnt/pinwheel";
+      type = "sshfs";
+      options = "allow_other,IdentityFile=/mnt/.ssh/id_rsa,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null";
+      unitConfig = {
+        DefaultDependencies = "no";
+      };
+    }
+  ];
+
+  # Define the automount unit
+  systemd.automounts = [
+    {
+      description = "Automount for Triangulum SSHFS";
+      wantedBy = [ "multi-user.target" ];
+      where = "/mnt/triangulum";
+    }
+    {
+      description = "Automount for Pinwheel SSHFS";
+      wantedBy = [ "multi-user.target" ];
+      where = "/mnt/pinwheel";
+    }
+  ];
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
@@ -50,12 +84,6 @@
     alsa.enable = true;
     alsa.support32Bit = true;
     pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
   };
 
   # Enable CUPS to print documents.
@@ -85,10 +113,9 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
     librewolf
     gnome-tweaks
+    sshfs
   ];
 
   hardware.graphics = {
@@ -139,7 +166,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  # services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -154,5 +181,4 @@
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
   system.stateVersion = "25.11"; # Did you read the comment?
-
 }
