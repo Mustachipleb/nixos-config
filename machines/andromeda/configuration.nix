@@ -10,6 +10,7 @@
     ./hardware-configuration.nix
     ./modules/gnome.nix
     ./modules/browser.nix
+    ./modules/mounts.nix
   ];
 
   nix.gc = {
@@ -34,74 +35,6 @@
 
   # Enable networking
   networking.networkmanager.enable = true;
-
-  # Define the mount unit
-  systemd.mounts = [
-    {
-      description = "SSHFS mount for Triangulum";
-      what = "mustachio@192.168.1.10:/home/mustachio";
-      where = "/mnt/triangulum";
-      type = "sshfs";
-      options = "allow_other,IdentityFile=/mnt/.ssh/id_rsa,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null,Ciphers=arcfour,Compression=no,auto_cache";
-      unitConfig = {
-        DefaultDependencies = "no";
-      };
-    }
-    {
-      description = "SSHFS mount for Pinwheel";
-      what = "mustachio@192.168.1.11:/home/mustachio";
-      where = "/mnt/pinwheel";
-      type = "sshfs";
-      options = "allow_other,IdentityFile=/mnt/.ssh/id_rsa,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null,Ciphers=arcfour,Compression=no,auto_cache";
-      unitConfig = {
-        DefaultDependencies = "no";
-      };
-    }
-    {
-      description = "SSHFS mount for Pinwheel - Downloads folder";
-      what = "mustachio@192.168.1.11:/mnt/qbittorrent_downloads";
-      where = "/mnt/pinwheel_downloads";
-      type = "sshfs";
-      options = "allow_other,IdentityFile=/mnt/.ssh/id_rsa,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null,Ciphers=arcfour,Compression=no,auto_cache";
-      unitConfig = {
-        DefaultDependencies = "no";
-      };
-    }
-    {
-      description = "SSHFS mount for NAS media share";
-      what = "mustachio@192.168.1.112:/media";
-      where = "/mnt/media";
-      type = "sshfs";
-      options = "allow_other,IdentityFile=/home/mustachio/.ssh/id_ed25519,StrictHostKeyChecking=no,UserKnownHostsFile=/dev/null,Compression=no,auto_cache";
-      unitConfig = {
-        DefaultDependencies = "no";
-      };
-    }
-  ];
-
-  # Define the automount unit
-  systemd.automounts = [
-    {
-      description = "Automount for Triangulum SSHFS";
-      wantedBy = [ "multi-user.target" ];
-      where = "/mnt/triangulum";
-    }
-    {
-      description = "Automount for Pinwheel SSHFS";
-      wantedBy = [ "multi-user.target" ];
-      where = "/mnt/pinwheel";
-    }
-    {
-      description = "Automount for Pinwheel downloads SSHFS";
-      wantedBy = [ "multi-user.target" ];
-      where = "/mnt/pinwheel_downloads";
-    }
-    {
-      description = "Automount for NAS media share SSHFS";
-      wantedBy = [ "multi-user.target" ];
-      where = "/mnt/media";
-    }
-  ];
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
