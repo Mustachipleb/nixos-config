@@ -88,6 +88,8 @@ let
 
     zsh-powerlevel10k
     meslo-lgs-nf
+
+    prusa-slicer
   ];
 in
 {
