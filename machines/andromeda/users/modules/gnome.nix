@@ -21,7 +21,7 @@
         accent-color = "yellow";
         color-scheme = "prefer-dark";
         gtk-theme = "WhiteSur-Dark-solid";
-        icon-theme = "WhiteSur-Dark";
+        icon-theme = "WhiteSur-dark";
         cursor-theme = "WhiteSur-cursors";
       };
       "org/gnome/desktop/peripherals/mouse" = {
@@ -39,6 +39,25 @@
       "org/gnome/shell/extensions/show-desktop-button" = {
         indicator-position = "LEFT";
       };
+      "org/gnome/shell/extensions/dash-to-dock" = {
+        always-center-icons = false;
+        background-opacity = 0.0;
+        custom-theme-shrink = false;
+        dash-max-icon-size = 48;
+        dock-position = "BOTTOM";
+        extend-height = false;
+        height-fraction = 0.90000000000000002;
+        hide-tooltip = false;
+        icon-size-fixed = false;
+        isolate-monitors = true;
+        multi-monitor = true;
+        preferred-monitor = -2;
+        preferred-monitor-by-connector = "DP-4";
+        preview-size-scale = 0.0;
+        show-icons-emblems = true;
+        show-show-apps-button = true;
+        transparency-mode = "DEFAULT";
+      };
       "org/gnome/shell" = {
         disable-user-extensions = false;
         enabled-extensions = with pkgs.gnomeExtensions; [
@@ -54,7 +73,9 @@
           "steam.desktop"
           "spotify.desktop"
           "webstorm.desktop"
+          "gitkraken.desktop"
           "org.gnome.Console.desktop"
+          "org.gnome.Nautilus.desktop"
           "org.gnome.Settings.desktop"
           "nixos-manual.desktop"
         ];

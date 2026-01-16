@@ -21,4 +21,12 @@ in
   fileSystems."/home/mustachio/pinwheel_downloads" =
     mkSshfs "mustachio@192.168.1.11:/mnt/qbittorrent_downloads";
   fileSystems."/home/mustachio/media" = mkSshfs "mustachio@192.168.1.112:/media";
+
+  fileSystems."/home/mustachio/zeta" = {
+    # The mapping of the volume is NOT included in the config
+    # so, if the mapper does not exist, run:
+    # sudo ldmtool create volume 8df9711e-2286-11ee-a0ef-244bfe93153b Volume1
+    # Assuming the GUID and volume are still the same, but they should be...
+    device = "/dev/mapper/ldm_vol_DESKTOP-7CMT1B6-Dg0_Volume1";
+  };
 }

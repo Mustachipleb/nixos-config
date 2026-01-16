@@ -12,6 +12,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-jetbrains-plugins.url = "github:nix-community/nix-jetbrains-plugins";
+    ldmtool-src = {
+      url = "github:mdbooth/libldm";
+      flake = false;
+    };
   };
 
   outputs =
@@ -19,6 +23,7 @@
       nixpkgs,
       home-manager,
       nix-jetbrains-plugins,
+      ldmtool-src,
       ...
     }:
     let
@@ -31,6 +36,20 @@
 
         modules = [
           ./configuration.nix
+          (
+            { pkgs, ... }:
+            {
+              nixpkgs.overlays = [
+                (final: prev: {
+                  ldmtool = prev.ldmtool.overrideAttrs (oldAttrs: {
+                    src = ldmtool-src;
+                    # Patches for 0.2.4 are merged into master, so this can be set empty
+                    patches = [ ];
+                  });
+                })
+              ];
+            }
+          )
 
           home-manager.nixosModules.home-manager
           {

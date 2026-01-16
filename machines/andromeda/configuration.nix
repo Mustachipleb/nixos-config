@@ -85,6 +85,7 @@
     librewolf
     gnome-tweaks
     sshfs
+    ldmtool
     nixfmt # Nix file formatter
     nil # Language server to use in IDE
   ];

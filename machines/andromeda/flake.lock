@@ -58,6 +58,22 @@
         "type": "github"
       }
     },
+    "ldmtool-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738849454,
+        "narHash": "sha256-Vd+3FnM+U5y2FxuslEsEzgZEx+5AQWuTjUVRnoFhm3I=",
+        "owner": "mdbooth",
+        "repo": "libldm",
+        "rev": "1eafb653ac6347a9d4281848c8295f9daffb1613",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mdbooth",
+        "repo": "libldm",
+        "type": "github"
+      }
+    },
     "nix-jetbrains-plugins": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -114,6 +130,7 @@
     "root": {
       "inputs": {
         "home-manager": "home-manager",
+        "ldmtool-src": "ldmtool-src",
         "nix-jetbrains-plugins": "nix-jetbrains-plugins",
         "nixpkgs": "nixpkgs_2"
       }
