@@ -82,4 +82,27 @@ in
       };
     };
   };
+
+  age.secrets = {
+    "ublock.config.txt" = {
+      file = ./secrets/ublock.config.age;
+      owner = "mustachio";
+    };
+    "enhancer-for-youtube.config.txt" = {
+      file = ./secrets/enhancer-for-youtube.config.age;
+      owner = "mustachio";
+    };
+    "dearrow.config.json" = {
+      file = ./secrets/dearrow.config.age;
+      owner = "mustachio";
+    };
+    "bookmarks.json" = {
+      file = ./secrets/bookmarks.age;
+      owner = "mustachio";
+    };
+    "sponsorblock.config.json" = {
+      file = ./secrets/sponsorblock.config.age;
+      owner = "mustachio";
+    };
+  };
 }

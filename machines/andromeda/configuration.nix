@@ -13,7 +13,7 @@
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
     ./modules/gnome.nix
-    ./modules/browser.nix
+    ./modules/browser/librewolf.nix
     ./modules/mounts.nix
   ];
 
@@ -75,29 +75,6 @@
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOw3bIQ+Ss8sjcYU5QyADiVs+ymCcRw0/4mi/Yk3LGxI mustachio@andromeda.dragonlegion.be"
     ];
-  };
-
-  age.secrets = {
-    "ublock.config.txt" = {
-      file = ./secrets/ublock.config.age;
-      owner = "mustachio";
-    };
-    "enhancer-for-youtube.config.txt" = {
-      file = ./secrets/enhancer-for-youtube.config.age;
-      owner = "mustachio";
-    };
-    "dearrow.config.json" = {
-      file = ./secrets/dearrow.config.age;
-      owner = "mustachio";
-    };
-    "bookmarks.json" = {
-      file = ./secrets/bookmarks.age;
-      owner = "mustachio";
-    };
-    "sponsorblock.config.json" = {
-      file = ./secrets/sponsorblock.config.age;
-      owner = "mustachio";
-    };
   };
 
   # Allow unfree packages

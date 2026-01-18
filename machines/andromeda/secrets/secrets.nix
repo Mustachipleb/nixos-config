@@ -6,25 +6,5 @@ let
   systems = [ system ];
 in
 {
-  "sponsorblock.config.age".publicKeys = [
-    mustachio
-    system
-  ];
-  "dearrow.config.age".publicKeys = [
-    mustachio
-    system
-  ];
-  "ublock.config.age".publicKeys = [
-    mustachio
-    system
-  ];
-  "bookmarks.age".publicKeys = [
-    mustachio
-    system
-  ];
-  "enhancer-for-youtube.config.age".publicKeys = [
-    mustachio
-    system
-  ];
-  #"secret2.age".publicKeys = users ++ systems;
+  # General secrets
 }
