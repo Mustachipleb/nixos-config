@@ -67,6 +67,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "keys"
     ];
     packages = with pkgs; [
       #  thunderbird
@@ -76,8 +77,27 @@
     ];
   };
 
-  age.secrets."sponsorblock.config" = {
-    file = ./secrets/sponsorblock.config.age;
+  age.secrets = {
+    "ublock.config.txt" = {
+      file = ./secrets/ublock.config.age;
+      owner = "mustachio";
+    };
+    "enhancer-for-youtube.config.txt" = {
+      file = ./secrets/enhancer-for-youtube.config.age;
+      owner = "mustachio";
+    };
+    "dearrow.config.json" = {
+      file = ./secrets/dearrow.config.age;
+      owner = "mustachio";
+    };
+    "bookmarks.json" = {
+      file = ./secrets/bookmarks.age;
+      owner = "mustachio";
+    };
+    "sponsorblock.config.json" = {
+      file = ./secrets/sponsorblock.config.age;
+      owner = "mustachio";
+    };
   };
 
   # Allow unfree packages
