@@ -2,7 +2,11 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  ...
+}:
 
 {
   imports = [
@@ -68,8 +72,12 @@
       #  thunderbird
     ];
     openssh.authorizedKeys.keys = [
-      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIDSFk3GHJeubHKHyYk8VFErH5EwMk5Kf9BRP5KHq1xVr andromeda@dragonlegion.be"
+      "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOw3bIQ+Ss8sjcYU5QyADiVs+ymCcRw0/4mi/Yk3LGxI mustachio@andromeda.dragonlegion.be"
     ];
+  };
+
+  age.secrets."sponsorblock.config" = {
+    file = ./secrets/sponsorblock.config.age;
   };
 
   # Allow unfree packages

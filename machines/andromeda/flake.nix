@@ -16,6 +16,10 @@
       url = "github:mdbooth/libldm";
       flake = false;
     };
+    agenix = {
+      url = "github:ryantm/agenix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -24,18 +28,23 @@
       home-manager,
       nix-jetbrains-plugins,
       ldmtool-src,
+      agenix,
       ...
     }:
     let
       system = "x86_64-linux";
     in
     {
-      formatter.x86_64-linux = nixpkgs.legacyPackages.x86_64-linux.nixfmt-tree;
+      formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
       nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
         inherit system;
 
         modules = [
           ./configuration.nix
+          agenix.nixosModules.default
+          {
+            environment.systemPackages = [ agenix.packages.${system}.default ];
+          }
           (
             { pkgs, ... }:
             {
