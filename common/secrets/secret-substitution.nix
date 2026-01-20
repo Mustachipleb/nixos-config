@@ -7,7 +7,8 @@
   config,
   pkgs,
   ...
-}: {
+}:
+{
   # Define your agenix secret
   age.secrets."dragonlegion.be.env".file = ../../common/secrets/dragonlegion.be.age;
   age.secrets.synologySmbCredentials.file = ../../common/secrets/synology.smb.credentials.age;

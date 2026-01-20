@@ -10,20 +10,20 @@ let
   agenixVersion = "0.15.0";
 in
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      <home-manager/nixos>
-      ../../common/ssh.nix
-      ../../common/powermgmt.nix
-      ../../common/docker.nix
-      ../../common/network.nix
-      ../../common/gpu/nvidia.nix
-      # ../../common/shares.nix
-      ../../common/secrets/secret-substitution.nix
-      #../../../dragonlegion.be/docker-compose.nix
-      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    <home-manager/nixos>
+    ../../common/ssh.nix
+    ../../common/powermgmt.nix
+    ../../common/docker.nix
+    ../../common/network.nix
+    ../../common/gpu/nvidia.nix
+    # ../../common/shares.nix
+    ../../common/secrets/secret-substitution.nix
+    #../../../dragonlegion.be/docker-compose.nix
+    "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
+  ];
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -47,9 +47,6 @@ in
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
-
-  networking.hostName = "nixos-box2";
-  networking.networkmanager.enable = true;
 
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
@@ -133,7 +130,10 @@ in
     git
     git-crypt
     compose2nix
-    (pkgs.callPackage "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix" {})
+    (pkgs.callPackage
+      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix"
+      { }
+    )
     lm_sensors
     htop
     thermald

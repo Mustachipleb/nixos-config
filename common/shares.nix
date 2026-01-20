@@ -1,4 +1,9 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   # Shorter name to access final settings a
@@ -16,7 +21,8 @@ let
     "gid=100"
     "iocharset=utf8"
   ];
-in {
+in
+{
   # Declare what settings a user of this "hello.nix" module CAN SET.
   options.services.drlg.fileShares = {
     enable = mkEnableOption "File Shares";
