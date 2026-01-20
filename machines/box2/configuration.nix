@@ -10,18 +10,20 @@ let
   agenixVersion = "0.15.0";
 in
 {
-  imports = [
-    # Include the results of the hardware scan.
-    ./hardware-configuration.nix
-    <home-manager/nixos>
-    ../../common/ssh.nix
-    ../../common/powermgmt.nix
-    ../../common/docker.nix
-    ../../common/network.nix
-    ../../common/gpu/nvidia.nix
-    ../../../dragonlegion.be/docker-compose.nix
-    "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
-  ];
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      <home-manager/nixos>
+      ../../common/ssh.nix
+      ../../common/powermgmt.nix
+      ../../common/docker.nix
+      ../../common/network.nix
+      ../../common/gpu/nvidia.nix
+      # ../../common/shares.nix
+      ../../common/secrets/secret-substitution.nix
+      #../../../dragonlegion.be/docker-compose.nix
+      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
+    ];
 
   boot.loader = {
     systemd-boot.enable = true;
@@ -59,21 +61,42 @@ in
       cdi = true;
       rootless = false;
     };
-    powerManagement.enable = true;
+    powerManagement = {
+      enable = true;
+      isLaptop = true;
+    };
     networking = {
       hostname = vars.hostName;
       ipAddress = vars.ipAddress;
       gateway = vars.gateway;
       allowedTCPPorts = [
+        53
         3098
         3099
-        53
+        8123
       ];
     };
     graphics.enable = true;
+    # fileShares = {
+    #   enable = false;
+    #   shares = {
+    #     media = true;
+    #     backups = true;
+    #   };
+    # };
   };
 
-  age.secrets."dragonlegion.be.age".file = ../../common/secrets/dragonlegion.be.age;
+  services.logind.extraConfig = ''
+    HandleLidSwitch=ignore
+    HandleLidSwitchDocked=ignore
+  '';
+
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   users.users = {
     mustachio =
@@ -110,10 +133,10 @@ in
     git
     git-crypt
     compose2nix
-    (pkgs.callPackage
-      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix"
-      { }
-    )
+    (pkgs.callPackage "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix" {})
+    lm_sensors
+    htop
+    thermald
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system

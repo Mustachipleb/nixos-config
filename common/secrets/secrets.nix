@@ -7,6 +7,13 @@ let
   systems = [ box2 ];
 in
 {
+  # To change the contents:
+  # - sudo su
+  # - cd to this folder
+  # - agenix -e filename --identity /etc/ssh/ssh_host_ed25519_key
+
   "dragonlegion.be.age".publicKeys = [ box2 ];
   #"secret2.age".publicKeys = users ++ systems;
+
+  "synology.smb.credentials.age".publicKeys = users ++ systems;
 }
