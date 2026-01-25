@@ -57,6 +57,7 @@
         show-icons-emblems = true;
         show-show-apps-button = true;
         transparency-mode = "DEFAULT";
+        show-mounts = false;
       };
       "org/gnome/shell" = {
         disable-user-extensions = false;
