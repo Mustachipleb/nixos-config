@@ -23,6 +23,7 @@ in
   fileSystems."/home/mustachio/pinwheel_downloads" =
     mkSshfs "mustachio@192.168.1.11:/mnt/qbittorrent_downloads";
   fileSystems."/home/mustachio/media" = mkSshfs "mustachio@192.168.1.112:/media";
+  fileSystems."/home/mustachio/backups" = mkSshfs "mustachio@192.168.1.112:/Backups";
 
   # TODO: Leads to emergency mode as the init systemd services can't finish successfully
   #  systemd.services.ldmtool-create-volume = {
