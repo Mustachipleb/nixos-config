@@ -93,6 +93,14 @@
     ldmtool
     nixfmt # Nix file formatter
     nil # Language server to use in IDE
+
+    # Thermals and monitoring
+    lm_sensors
+    lshw
+    nvtopPackages.nvidia
+    liquidctl
+    geekbench
+    stress-ng
   ];
 
   hardware.graphics = {
@@ -131,6 +139,10 @@
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.beta;
   };
+
+  # Thermals
+  services.thermald.enable = true;
+  programs.coolercontrol.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
