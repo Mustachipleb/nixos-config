@@ -90,6 +90,7 @@ let
     meslo-lgs-nf
 
     prusa-slicer
+    (callPackage ./packages/osu-lazer/package.nix { })
   ];
 in
 {
