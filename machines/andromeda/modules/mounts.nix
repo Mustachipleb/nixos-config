@@ -18,12 +18,17 @@ let
   };
 in
 {
-  fileSystems."/home/mustachio/triangulum" = mkSshfs "mustachio@192.168.1.10:/home/mustachio";
+  # System brokey
+  # fileSystems."/home/mustachio/triangulum" = mkSshfs "mustachio@192.168.1.10:/home/mustachio";
   fileSystems."/home/mustachio/pinwheel" = mkSshfs "mustachio@192.168.1.11:/home/mustachio";
   fileSystems."/home/mustachio/pinwheel_downloads" =
     mkSshfs "mustachio@192.168.1.11:/mnt/qbittorrent_downloads";
   fileSystems."/home/mustachio/media" = mkSshfs "mustachio@192.168.1.112:/media";
   fileSystems."/home/mustachio/backups" = mkSshfs "mustachio@192.168.1.112:/Backups";
+  fileSystems."/home/mustachio/mayall" = {
+    device = "/dev/disk/by-uuid/11cd9994-37fa-402e-83b9-8321d51b4acc";
+    fsType = "ext4";
+  };
 
   # TODO: Leads to emergency mode as the init systemd services can't finish successfully
   #  systemd.services.ldmtool-create-volume = {
