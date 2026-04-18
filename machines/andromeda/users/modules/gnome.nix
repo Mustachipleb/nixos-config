@@ -73,6 +73,7 @@
           "librewolf.desktop"
           "steam.desktop"
           "spotify.desktop"
+          "discord.desktop"
           "webstorm.desktop"
           "gitkraken.desktop"
           "org.gnome.Console.desktop"

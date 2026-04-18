@@ -9,7 +9,7 @@
 # Packages that should be installed to the user profile.
 let
   ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2025.3.1";
-  ideaPlugins = map (p: ideaPluginBase.${p}) [
+  webstormPlugins = map (p: ideaPluginBase.${p}) [
     "nix-idea"
     "org.jetbrains.junie"
     "zielu.gittoolbox"
@@ -17,8 +17,16 @@ let
     "izhangzhihao.rainbow.brackets"
     "monokai-pro"
   ];
+  riderPlugins = map (p: ideaPluginBase.${p}) [
+    "org.jetbrains.junie"
+    "zielu.gittoolbox"
+    "com.intellij.ml.llm"
+    "izhangzhihao.rainbow.brackets"
+    "monokai-pro"
+  ];
   editorPackages = with pkgs; [
-    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.webstorm ideaPlugins)
+    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.webstorm webstormPlugins)
+    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider riderPlugins)
   ];
 
   # De vuilbak
@@ -90,7 +98,13 @@ let
     meslo-lgs-nf
 
     prusa-slicer
+    signal-desktop
+    obsidian
+    protonmail-desktop
+
     (callPackage ./packages/osu-lazer/package.nix { })
+
+    httptoolkit
   ];
 in
 {
@@ -140,6 +154,12 @@ in
       user.name = "Nicolas Van Damme";
       user.email = "nicolas.van.damme2@hotmail.com";
     };
+  };
+
+  home = {
+    sessionPath = [
+      "/home/mustachio/.npm-global/bin"
+    ];
   };
 
   programs.zsh = {

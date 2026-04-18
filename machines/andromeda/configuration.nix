@@ -38,7 +38,18 @@
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
   # Enable networking
-  networking.networkmanager.enable = true;
+  networking.networkmanager = {
+    enable = true;
+    plugins = with pkgs; [
+      networkmanager-openvpn
+    ];
+  };
+  #  services.openvpn.servers = {
+  #    airVPN = {
+  #      config = ''config /root/nixos/openvpn/airvpn.ovpn '';
+  #      updateResolvConf = true;
+  #    };
+  #  };
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
@@ -68,6 +79,8 @@
       "networkmanager"
       "wheel"
       "keys"
+      "fuse"
+      "docker"
     ];
     packages = with pkgs; [
       #  thunderbird
@@ -82,6 +95,8 @@
 
   programs.steam = {
     enable = true;
+    protontricks.enable = true;
+    gamescopeSession.enable = true;
   };
 
   # List packages installed in system profile. To search, run:
@@ -101,6 +116,11 @@
     liquidctl
     geekbench
     stress-ng
+
+    ffmpeg-headless
+    ffmpegthumbnailer
+
+    nodejs_24
   ];
 
   hardware.graphics = {
@@ -143,6 +163,14 @@
   # Thermals
   services.thermald.enable = true;
   programs.coolercontrol.enable = true;
+
+  programs.thunderbird.enable = true;
+
+  hardware.opentabletdriver.enable = true;
+  hardware.uinput.enable = true;
+  boot.kernelModules = [ "uinput" ];
+
+  virtualisation.docker.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
