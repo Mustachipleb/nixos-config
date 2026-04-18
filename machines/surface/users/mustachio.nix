@@ -7,34 +7,35 @@ in
     (import "${home-manager}/nixos")
   ];
 
-  home-manager.users.mustachio = { pkgs, ... }: {
-    home.packages = with pkgs; [
-      zsh
-      starship
-      meslo-lgs-nf
-    ];
+  home-manager.users.mustachio =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        zsh
+        starship
+        meslo-lgs-nf
+      ];
 
-    programs.zsh = {
-      enable = true;
-      oh-my-zsh = {
+      programs.zsh = {
+        enable = true;
+        oh-my-zsh = {
+          enable = true;
+        };
+        shellAliases = {
+          rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/nixos-config/machines/surface/configuration.nix";
+        };
+      };
+
+      programs.starship = {
         enable = true;
       };
-      shellAliases = {
-        rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/nixos-config/machines/surface/configuration.nix";
+
+      programs.git = {
+        enable = true;
+        userName = "Mustachio";
+        userEmail = "mustachio@dragonlegion.be";
       };
-    };
 
-    programs.starship = {
-      enable = true;
+      home.stateVersion = "24.05";
     };
-
-    programs.git = {
-      enable = true;
-      userName = "Mustachio";
-      userEmail = "mustachio@dragonlegion.be";
-    };
-
-    home.stateVersion = "24.05";
-  };
 }
-

@@ -1,11 +1,17 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   # Shorter name to access final settings a
   # user of hello.nix module HAS ACTUALLY SET.
   # cfg is a typical convention.
   cfg = config.services.drlg.networking;
-in {
+in
+{
   # Declare what settings a user of this "hello.nix" module CAN SET.
   options.services.drlg.networking = {
     hostname = mkOption {
@@ -14,7 +20,7 @@ in {
     };
     customNameServers = mkOption {
       type = types.listOf types.str;
-      default = [];
+      default = [ ];
     };
     networkInterface = mkOption {
       type = types.str;
@@ -30,11 +36,11 @@ in {
     };
     allowedTCPPorts = mkOption {
       type = types.listOf types.int;
-      default = [22];
+      default = [ 22 ];
     };
     allowedUDPPorts = mkOption {
       type = types.listOf types.int;
-      default = [];
+      default = [ ];
     };
     gateway = mkOption {
       type = types.str;

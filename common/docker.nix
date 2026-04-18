@@ -1,11 +1,17 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.services.drlg.docker;
   # sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
   # sudo nix-channel --update
-  unstable = import <nixos-unstable> { config = {}; };
-in {
+  unstable = import <nixos-unstable> { config = { }; };
+in
+{
   options.services.drlg.docker = {
     enable = mkEnableOption "Docker";
     cdi = mkOption {

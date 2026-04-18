@@ -1,18 +1,26 @@
-{ lib, pkgs, config, ... }:
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 with lib;
 let
   cfg = config.services.drlg.graphics;
-in {
+in
+{
   options.services.drlg.graphics = {
     enable = mkEnableOption "Graphics";
   };
 
   config = mkIf cfg.enable {
     # enable nvidia-x11 unfree
-    nixpkgs.config.allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [
-      "nvidia-x11"
-      "nvidia-settings"
-    ];
+    nixpkgs.config.allowUnfreePredicate =
+      pkg:
+      builtins.elem (lib.getName pkg) [
+        "nvidia-x11"
+        "nvidia-settings"
+      ];
 
     hardware.nvidia-container-toolkit.enable = true;
 
@@ -22,7 +30,7 @@ in {
     };
 
     # Load nvidia driver for Xorg and Wayland
-    services.xserver.videoDrivers = ["nvidia"];
+    services.xserver.videoDrivers = [ "nvidia" ];
 
     hardware.nvidia = {
 

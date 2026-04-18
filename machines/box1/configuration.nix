@@ -1,12 +1,17 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      <home-manager/nixos>
-      (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./hardware-configuration.nix
+    <home-manager/nixos>
+    (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -17,7 +22,7 @@
   networking.hostName = "nixos-box1"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
-  networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
+  networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
@@ -36,7 +41,13 @@
 
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 80 443 8280 8281 2375 ];
+    allowedTCPPorts = [
+      80
+      443
+      8280
+      8281
+      2375
+    ];
   };
 
   programs.zsh.enable = true;
@@ -66,36 +77,38 @@
     shell = pkgs.zsh;
   };
 
-  home-manager.users.mustachio = { pkgs, ... }: {
-    home.packages = with pkgs; [
-      zsh
-      oh-my-zsh
-      starship
-      meslo-lgs-nf
-    ];
+  home-manager.users.mustachio =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        zsh
+        oh-my-zsh
+        starship
+        meslo-lgs-nf
+      ];
 
-    programs.zsh = {
-      enable = true;
-      oh-my-zsh = {
+      programs.zsh = {
+        enable = true;
+        oh-my-zsh = {
+          enable = true;
+        };
+        shellAliases = {
+          rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/config/machines/box1/configuration.nix";
+        };
+      };
+
+      programs.starship = {
         enable = true;
       };
-      shellAliases = {
-        rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/config/machines/box1/configuration.nix";
+
+      programs.git = {
+        enable = true;
+        userName = "Mustachio";
+        userEmail = "mustachio@dragonlegion.be";
       };
-    };
 
-    programs.starship = {
-      enable = true;
+      home.stateVersion = "24.05";
     };
-
-    programs.git = {
-      enable = true;
-      userName = "Mustachio";
-      userEmail = "mustachio@dragonlegion.be";
-    };
-
-    home.stateVersion = "24.05";
-  };
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
@@ -160,11 +173,14 @@
     script = ''
       docker compose -f /home/mustachio/docker/compose.yml up --remove-orphans
     '';
-    wantedBy = ["multi-user.target"];
+    wantedBy = [ "multi-user.target" ];
     # If you use podman
     # after = ["podman.service" "podman.socket"];
     # If you use docker
-    after = ["docker.service" "docker.socket"];
+    after = [
+      "docker.service"
+      "docker.socket"
+    ];
     path = [ pkgs.docker ];
   };
 
@@ -206,4 +222,3 @@
   system.stateVersion = "24.05"; # Did you read the comment?
 
 }
-

@@ -1,0 +1,5 @@
+- [x] Fix icons in nautilus
+- [ ] Copy extension config and bookmarks for librewolf
+- [ ] Free up Zeta
+  - ldmtool so maybe not needed
+  - Readonly? check ntfsfix and saved reddit thread

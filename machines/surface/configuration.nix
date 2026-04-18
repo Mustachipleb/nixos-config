@@ -5,12 +5,14 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      "${builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }}/microsoft/surface/surface-pro-intel"
-      ./hardware-configuration.nix
-      ./users/mustachio.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    "${
+      builtins.fetchGit { url = "https://github.com/NixOS/nixos-hardware.git"; }
+    }/microsoft/surface/surface-pro-intel"
+    ./hardware-configuration.nix
+    ./users/mustachio.nix
+  ];
 
   nixpkgs.config.allowUnfree = true;
 
@@ -83,14 +85,18 @@
 
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
-  
+
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mustachio = {
     isNormalUser = true;
     description = "Mustachio";
-    extraGroups = [ "networkmanager" "wheel" "surface-control" ];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "surface-control"
+    ];
     shell = pkgs.zsh;
   };
 
@@ -103,15 +109,18 @@
     wget
     git
     zsh
-      (vscode-with-extensions.override {
+    (vscode-with-extensions.override {
       vscode = vscodium;
-      vscodeExtensions = with vscode-extensions; [
-        bbenoist.nix
-        eamodio.gitlens
-      ] ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [];
+      vscodeExtensions =
+        with vscode-extensions;
+        [
+          bbenoist.nix
+          eamodio.gitlens
+        ]
+        ++ pkgs.vscode-utils.extensionsFromVscodeMarketplace [ ];
     })
-  #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-  #  wget
+    #  vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    #  wget
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
