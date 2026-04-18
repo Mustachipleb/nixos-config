@@ -31,7 +31,7 @@ let
 
   # De vuilbak
   miscPackages = with pkgs; [
-    neofetch
+    fastfetch
     nnn # terminal file manager
 
     # archives
@@ -101,8 +101,6 @@ let
     signal-desktop
     obsidian
     protonmail-desktop
-
-    (callPackage ./packages/osu-lazer/package.nix { })
 
     httptoolkit
   ];
