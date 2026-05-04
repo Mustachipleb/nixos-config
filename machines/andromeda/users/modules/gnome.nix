@@ -71,9 +71,12 @@
         ];
         favorite-apps = [
           "librewolf.desktop"
+          "thunderbird.desktop"
+          "proton-mail.desktop"
           "steam.desktop"
           "spotify.desktop"
           "discord.desktop"
+          "signal.desktop"
           "webstorm.desktop"
           "gitkraken.desktop"
           "org.gnome.Console.desktop"

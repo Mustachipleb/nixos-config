@@ -121,6 +121,7 @@
     ffmpegthumbnailer
 
     nodejs_24
+    jstest-gtk
   ];
 
   hardware.graphics = {

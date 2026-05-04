@@ -101,6 +101,7 @@ let
     signal-desktop
     obsidian
     protonmail-desktop
+    synology-drive-client
 
     httptoolkit
   ];
