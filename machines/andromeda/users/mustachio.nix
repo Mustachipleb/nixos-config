@@ -24,6 +24,9 @@ let
     "izhangzhihao.rainbow.brackets"
     "monokai-pro"
   ];
+
+  jellyfin-desktop = pkgs.callPackage ./packages/jellyfin-desktop/package.nix { };
+
   editorPackages = with pkgs; [
     (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.webstorm webstormPlugins)
     (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider riderPlugins)
@@ -31,6 +34,7 @@ let
 
   # De vuilbak
   miscPackages = with pkgs; [
+    jellyfin-desktop
     fastfetch
     nnn # terminal file manager
 
