@@ -187,7 +187,7 @@ in
       ];
     };
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch";
+      rebuild = "nix run /home/mustachio/nixos-config/machines/andromeda#deploy-andromeda";
     };
     history.size = 10000;
   };

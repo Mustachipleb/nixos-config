@@ -24,6 +24,7 @@
 
   outputs =
     inputs@{
+      self,
       nixpkgs,
       home-manager,
       nix-jetbrains-plugins,
@@ -36,6 +37,43 @@
     in
     {
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
+      packages.${system}.deploy-andromeda = nixpkgs.legacyPackages.${system}.writeShellApplication {
+        name = "deploy-andromeda";
+        runtimeInputs = with nixpkgs.legacyPackages.${system}; [
+          git
+          gnugrep
+          gawk
+        ];
+        text = ''
+          set -euo pipefail
+
+          echo "Deploying Andromeda configuration..."
+
+          cd /home/mustachio/nixos-config/
+
+          if ! git diff --quiet || ! git diff --cached --quiet; then
+            echo "Refusing deployment: git tree is dirty." >&2
+            exit 1
+          fi
+
+          nh os switch
+
+          gen="$(sudo nix-env -p /nix/var/nix/profiles/system --list-generations | tail -n1 | awk '{print $1}')"
+          tag="deploy/andromeda/gen-''${gen}"
+
+          if git rev-parse -q --verify "refs/tags/''${tag}" >/dev/null; then
+            echo "Tag already exists: ''${tag}" >&2
+            exit 1
+          fi
+
+          git tag -a "''${tag}" -m "andromeda generation ''${gen}"
+          git push origin "''${tag}"
+        '';
+      };
+      apps.${system}.deploy-andromeda = {
+        type = "app";
+        program = "${self.packages.${system}.deploy-andromeda}/bin/deploy-andromeda";
+      };
       nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
         inherit system;
 

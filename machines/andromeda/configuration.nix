@@ -17,12 +17,6 @@
     ./modules/mounts.nix
   ];
 
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 7d";
-  };
-
   nix.settings.experimental-features = [
     "nix-command"
     "flakes"
@@ -97,6 +91,13 @@
     enable = true;
     protontricks.enable = true;
     gamescopeSession.enable = true;
+  };
+
+  programs.nh = {
+    enable = true;
+    clean.enable = true;
+    clean.extraArgs = "--keep-since 7d --keep 5";
+    flake = "/home/mustachio/nixos-config/machines/andromeda"; # sets NH_OS_FLAKE variable for you
   };
 
   # List packages installed in system profile. To search, run:
