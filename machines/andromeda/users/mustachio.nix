@@ -151,7 +151,14 @@ in
     enable = true;
     settings = {
       user.name = "Nicolas Van Damme";
-      user.email = "nicolas.van.damme2@hotmail.com";
+      user.email = "mustachio@dragonlegion.be";
+    };
+  };
+
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper = {
+      enable = true;
     };
   };
 
