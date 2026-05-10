@@ -19,7 +19,9 @@ in
     ../../common/docker.nix
     ../../common/network.nix
     ../../common/gpu/nvidia.nix
-    ../../../dragonlegion.be/docker-compose.nix
+    # ../../common/shares.nix
+    ../../common/secrets/secret-substitution.nix
+    #../../../dragonlegion.be/docker-compose.nix
     "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
   ];
 
@@ -46,9 +48,6 @@ in
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
 
-  networking.hostName = "nixos-box2";
-  networking.networkmanager.enable = true;
-
   # Configure keymap in X11
   services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
@@ -59,21 +58,42 @@ in
       cdi = true;
       rootless = false;
     };
-    powerManagement.enable = true;
+    powerManagement = {
+      enable = true;
+      isLaptop = true;
+    };
     networking = {
       hostname = vars.hostName;
       ipAddress = vars.ipAddress;
       gateway = vars.gateway;
       allowedTCPPorts = [
+        53
         3098
         3099
-        53
+        8123
       ];
     };
     graphics.enable = true;
+    # fileShares = {
+    #   enable = false;
+    #   shares = {
+    #     media = true;
+    #     backups = true;
+    #   };
+    # };
   };
 
-  age.secrets."dragonlegion.be.age".file = ../../common/secrets/dragonlegion.be.age;
+  services.logind.extraConfig = ''
+    HandleLidSwitch=ignore
+    HandleLidSwitchDocked=ignore
+  '';
+
+  systemd.sleep.extraConfig = ''
+    AllowSuspend=no
+    AllowHibernation=no
+    AllowHybridSleep=no
+    AllowSuspendThenHibernate=no
+  '';
 
   users.users = {
     mustachio =
@@ -114,6 +134,9 @@ in
       "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix"
       { }
     )
+    lm_sensors
+    htop
+    thermald
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system

@@ -33,7 +33,10 @@
     '';
   };
 
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.kernelModules = [
+    "kvm-intel"
+    "coretemp"
+  ];
   boot.extraModulePackages = [ ];
 
   boot.initrd.luks.devices."nixos".device = "/dev/md0";
