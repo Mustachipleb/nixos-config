@@ -19,8 +19,6 @@ in
     ../../common/docker.nix
     ../../common/network.nix
     ../../common/gpu/nvidia.nix
-    # ../../common/shares.nix
-    ../../common/secrets/secret-substitution.nix
     #../../../dragonlegion.be/docker-compose.nix
     "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
   ];
