@@ -72,13 +72,6 @@ in
       ];
     };
     graphics.enable = true;
-    # fileShares = {
-    #   enable = false;
-    #   shares = {
-    #     media = true;
-    #     backups = true;
-    #   };
-    # };
   };
 
   services.logind.extraConfig = ''
