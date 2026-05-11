@@ -52,7 +52,7 @@
         height-fraction = 0.90000000000000002;
         hide-tooltip = false;
         icon-size-fixed = false;
-        isolate-monitors = true;
+        isolate-monitors = false;
         multi-monitor = true;
         preferred-monitor = -2;
         preferred-monitor-by-connector = "DP-4";
