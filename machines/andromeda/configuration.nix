@@ -105,6 +105,7 @@
   environment.systemPackages = with pkgs; [
     librewolf
     gnome-tweaks
+    hydrapaper
     sshfs
     ldmtool
     nixfmt # Nix file formatter
