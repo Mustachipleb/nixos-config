@@ -3,11 +3,13 @@
   pkgs,
   system,
   nix-jetbrains-plugins,
+  spicetify-nix,
   ...
 }:
 
 # Packages that should be installed to the user profile.
 let
+  spicePkgs = spicetify-nix.legacyPackages.${system};
   ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2025.3.1";
   webstormPlugins = map (p: ideaPluginBase.${p}) [
     "nix-idea"
@@ -90,7 +92,6 @@ let
     pciutils # lspci
     usbutils # lsusb
 
-    spotify
     discord
     gitkraken
 
@@ -109,6 +110,7 @@ in
 {
   imports = [
     ./modules/gnome.nix
+    spicetify-nix.homeManagerModules.spicetify
   ];
 
   home.username = "mustachio";
@@ -160,6 +162,20 @@ in
     gitCredentialHelper = {
       enable = true;
     };
+  };
+
+  programs.spicetify = {
+    enable = true;
+    enabledExtensions = with spicePkgs.extensions; [
+      shuffle
+      songStats
+      catJamSynced
+      sortPlay
+      spicyLyrics
+      ytVideo
+    ];
+    theme = spicePkgs.themes.catppuccin;
+    colorScheme = "mocha";
   };
 
   home = {

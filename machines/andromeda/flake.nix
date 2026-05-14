@@ -20,6 +20,7 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
   };
 
   outputs =
@@ -30,6 +31,7 @@
       nix-jetbrains-plugins,
       ldmtool-src,
       agenix,
+      spicetify-nix,
       ...
     }:
     let
@@ -107,7 +109,7 @@
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
             home-manager.extraSpecialArgs = {
-              inherit system nix-jetbrains-plugins;
+              inherit system nix-jetbrains-plugins spicetify-nix;
             };
           }
         ];
