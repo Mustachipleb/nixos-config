@@ -166,16 +166,61 @@ in
 
   programs.spicetify = {
     enable = true;
+    alwaysEnableDevTools = true;
     enabledExtensions = with spicePkgs.extensions; [
       shuffle
       songStats
       catJamSynced
       sortPlay
       spicyLyrics
-      ytVideo
     ];
     theme = spicePkgs.themes.catppuccin;
-    colorScheme = "mocha";
+    customColorScheme = {
+      text = "fff8f9";
+      subtext = "fff1f3";
+      main = "2c2525";
+      main-elevated = "403838";
+      highlight = "f9cc6c";
+      highlight-elevated = "f9cc6c";
+      sidebar = "191515";
+      player = "191515";
+      card = "403838";
+      shadow = "2c2525";
+      selected-row = "72696a";
+      button = "5d5657";
+      button-active = "f9cc6c";
+      button-disabled = "827d7e";
+      tab-active = "403838";
+      notification = "403838";
+      notification-error = "fd6883";
+      equalizer = "000000";
+      misc = "f9cc6c";
+
+      # Catppuccin
+      crust = "232634";
+      mantle = "2c2525";
+      base = "2c2525";
+      surface0 = "403838";
+      surface1 = "5f5353";
+      surface2 = "acb0be";
+      overlay0 = "737994";
+      overlay1 = "838ba7";
+      overlay2 = "72696a";
+      rosewater = "fd6883";
+      flamingo = "fd6883";
+      pink = "fd6883";
+      maroon = "fd6883";
+      red = "fd6883";
+      peach = "fd6883";
+      yellow = "f9cc6c";
+      green = "adda78";
+      teal = "85dacc";
+      sapphire = "85dacc";
+      blue = "85dacc";
+      sky = "85dacc";
+      mauve = "a8a9eb";
+      lavender = "a8a9eb";
+    };
   };
 
   home = {
