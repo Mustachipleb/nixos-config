@@ -92,7 +92,11 @@ let
     pciutils # lspci
     usbutils # lsusb
 
-    discord
+    # If it doesn't start, make sure "enableHardwareAcceleration" = false in .config/discord/settings.json
+    (discord.override {
+      withOpenASAR = true;
+      withVencord = true;
+    })
     gitkraken
 
     zsh-powerlevel10k
