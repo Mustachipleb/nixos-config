@@ -100,6 +100,13 @@
     flake = "/home/mustachio/nixos-config/machines/andromeda"; # sets NH_OS_FLAKE variable for you
   };
 
+  # Enables running generic binaries through NixOS.
+  # This goes against the core principles of NixOS, but in some cases it is much simpler than dealing with alternative means.
+  # I mostly intend to use this for running pre-packaged binaries in node modules.
+  programs.nix-ld = {
+    enable = true;
+  };
+
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
