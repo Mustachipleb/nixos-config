@@ -1,5 +1,6 @@
 - [x] Fix icons in nautilus
-- [ ] Copy extension config and bookmarks for librewolf
-- [ ] Free up Zeta
+- [x] Copy extension config and bookmarks for librewolf
+- [x] Free up Zeta
   - ldmtool so maybe not needed
   - Readonly? check ntfsfix and saved reddit thread
+- [ ] Save screen layout and display settings because they keep resetting when updating Gnome
