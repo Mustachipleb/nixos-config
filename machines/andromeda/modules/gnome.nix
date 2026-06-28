@@ -1,6 +1,19 @@
-{ config, pkgs, ... }:
+{
+  config,
+  nixpkgs-unstable,
+  pkgs,
+  ...
+}:
 
 {
+  environment.systemPackages = with nixpkgs-unstable; [
+    gnome-tweaks
+
+    # To provide video thumbnails in Nautilus
+    ffmpeg-headless
+    ffmpegthumbnailer
+  ];
+
   # Enable the X11 windowing system.
   services.xserver.enable = true;
 

@@ -96,7 +96,6 @@
         ];
         favorite-apps = [
           "librewolf.desktop"
-          "thunderbird.desktop"
           "proton-mail.desktop"
           "steam.desktop"
           "spotify.desktop"
