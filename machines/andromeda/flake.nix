@@ -16,10 +16,6 @@
       url = "github:nix-community/nix-jetbrains-plugins";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
-    ldmtool-src = {
-      url = "github:mdbooth/libldm";
-      flake = false;
-    };
     agenix = {
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -37,7 +33,6 @@
       nixpkgs-unstable,
       home-manager,
       nix-jetbrains-plugins,
-      ldmtool-src,
       agenix,
       spicetify-nix,
       ...
@@ -101,21 +96,6 @@
           {
             environment.systemPackages = [ agenix.packages.${system}.default ];
           }
-          (
-            { pkgs, ... }:
-            {
-              nixpkgs.overlays = [
-                (final: prev: {
-                  ldmtool = prev.ldmtool.overrideAttrs (oldAttrs: {
-                    src = ldmtool-src;
-                    # Patches for 0.2.4 are merged into master, so this can be set empty
-                    patches = [ ];
-                  });
-                })
-              ];
-            }
-          )
-
           home-manager.nixosModules.home-manager
           {
             home-manager.useGlobalPkgs = true;
