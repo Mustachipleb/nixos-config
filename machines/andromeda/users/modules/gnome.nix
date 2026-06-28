@@ -1,7 +1,12 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  nixpkgs-unstable,
+  ...
+}:
 
 {
-  home.packages = with pkgs; [
+  home.packages = with nixpkgs-unstable; [
     whitesur-gtk-theme
     whitesur-icon-theme
     whitesur-cursors
@@ -68,7 +73,7 @@
       };
       "org/gnome/shell" = {
         disable-user-extensions = false;
-        enabled-extensions = with pkgs.gnomeExtensions; [
+        enabled-extensions = with nixpkgs-unstable.gnomeExtensions; [
           user-themes.extensionUuid
           dash-to-dock.extensionUuid
           show-desktop-button.extensionUuid

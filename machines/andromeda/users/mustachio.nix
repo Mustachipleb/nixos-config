@@ -11,7 +11,7 @@
 # Packages that should be installed to the user profile.
 let
   spicePkgs = spicetify-nix.legacyPackages.${system};
-  ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2026.1.1";
+  ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2026.1.3";
   webstormPlugins = map (p: ideaPluginBase.${p}) [
     "nix-idea"
     "org.jetbrains.junie"
