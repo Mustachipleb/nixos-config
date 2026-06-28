@@ -1,6 +1,7 @@
 {
   config,
   pkgs,
+  nixpkgs-unstable,
   system,
   nix-jetbrains-plugins,
   spicetify-nix,
@@ -10,7 +11,7 @@
 # Packages that should be installed to the user profile.
 let
   spicePkgs = spicetify-nix.legacyPackages.${system};
-  ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2025.3.1";
+  ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2026.1.1";
   webstormPlugins = map (p: ideaPluginBase.${p}) [
     "nix-idea"
     "org.jetbrains.junie"
@@ -27,12 +28,12 @@ let
     "monokai-pro"
   ];
   editorPackages = with pkgs; [
-    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.webstorm webstormPlugins)
-    (pkgs.jetbrains.plugins.addPlugins pkgs.jetbrains.rider riderPlugins)
+    (nixpkgs-unstable.jetbrains.plugins.addPlugins nixpkgs-unstable.jetbrains.webstorm webstormPlugins)
+    (nixpkgs-unstable.jetbrains.plugins.addPlugins nixpkgs-unstable.jetbrains.rider riderPlugins)
   ];
 
   # De vuilbak
-  miscPackages = with pkgs; [
+  miscPackages = with nixpkgs-unstable; [
     fastfetch
     nnn # terminal file manager
 

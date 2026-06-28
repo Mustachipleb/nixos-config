@@ -5,6 +5,7 @@
 {
   config,
   pkgs,
+  nixpkgs-unstable,
   ...
 }:
 
@@ -109,7 +110,7 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; [
+  environment.systemPackages = with nixpkgs-unstable; [
     librewolf
     gnome-tweaks
     hydrapaper

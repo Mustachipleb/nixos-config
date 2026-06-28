@@ -2,7 +2,8 @@
   description = "Root of configuration";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/master";
       # The `follows` keyword in inputs is used for inheritance.
@@ -20,13 +21,17 @@
       url = "github:ryantm/agenix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    spicetify-nix.url = "github:Gerg-L/spicetify-nix";
+    spicetify-nix = {
+      url = "github:Gerg-L/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs-unstable";
+    };
   };
 
   outputs =
     inputs@{
       self,
       nixpkgs,
+      nixpkgs-unstable,
       home-manager,
       nix-jetbrains-plugins,
       ldmtool-src,
@@ -36,6 +41,10 @@
     }:
     let
       system = "x86_64-linux";
+      unstablePkgs = import nixpkgs-unstable {
+        inherit system;
+        config.allowUnfree = true;
+      };
     in
     {
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
@@ -79,6 +88,10 @@
       nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
         inherit system;
 
+        specialArgs = {
+          nixpkgs-unstable = unstablePkgs;
+        };
+
         modules = [
           ./configuration.nix
           agenix.nixosModules.default
@@ -110,6 +123,7 @@
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
             home-manager.extraSpecialArgs = {
               inherit system nix-jetbrains-plugins spicetify-nix;
+              nixpkgs-unstable = unstablePkgs;
             };
           }
         ];
