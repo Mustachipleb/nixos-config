@@ -46,6 +46,8 @@
   #    };
   #  };
 
+  services.udev.packages = with pkgs; [ gnome-settings-daemon ];
+
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
 

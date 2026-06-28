@@ -17,6 +17,7 @@
     gnomeExtensions.show-desktop-button
     gnomeExtensions.search-light
     gnomeExtensions.gnome-40-ui-improvements
+    gnomeExtensions.appindicator
   ];
 
   dconf = {
@@ -28,6 +29,17 @@
         gtk-theme = "WhiteSur-Dark-solid";
         icon-theme = "WhiteSur-dark";
         cursor-theme = "WhiteSur-cursors";
+      };
+      "org/gnome/desktop/background" = {
+        color-shading-type = "solid";
+        picture-options = "spanned";
+        picture-uri = "file:///home/mustachio/.cache/org.gabmus.hydrapaper/merged_wallpaper.png";
+        picture-uri-dark = "file:///home/mustachio/.cache/org.gabmus.hydrapaper/merged_wallpaper_dark.png";
+        primary-color = "#241f31";
+        secondary-color = "#000000";
+      };
+      "org/gnome/mutter" = {
+        workspaces-only-on-primary = true;
       };
       "org/gnome/desktop/peripherals/mouse" = {
         accel-profile = "flat";
@@ -80,6 +92,7 @@
           blur-my-shell.extensionUuid
           search-light.extensionUuid
           gnome-40-ui-improvements.extensionUuid
+          appindicator.extensionUuid
         ];
         favorite-apps = [
           "librewolf.desktop"
@@ -96,10 +109,215 @@
           "org.gnome.Settings.desktop"
           "nixos-manual.desktop"
         ];
+        remember-mount-password = true;
       };
       "org/gnome/shell/extensions/user-theme" = {
         name = "WhiteSur-Dark-solid";
       };
     };
   };
+
+  # Display config
+  home.file.".config/monitors.xml".text = ''
+    <monitors version="2">
+      <configuration>
+        <layoutmode>physical</layoutmode>
+        <logicalmonitor>
+          <x>5120</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-1</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801172</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>59.940</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>2560</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-3</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801071</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>59.940</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-2</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801145</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>59.940</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <disabled>
+          <monitorspec>
+            <connector>HDMI-1</connector>
+            <vendor>BSE</vendor>
+            <product>Cinemate</product>
+            <serial>0x00000000</serial>
+          </monitorspec>
+        </disabled>
+      </configuration>
+      <configuration>
+        <layoutmode>physical</layoutmode>
+        <logicalmonitor>
+          <x>2560</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-4</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801071</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>5120</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-2</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801172</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-3</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801145</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <disabled>
+          <monitorspec>
+            <connector>HDMI-2</connector>
+            <vendor>BSE</vendor>
+            <product>Cinemate</product>
+            <serial>0x00000000</serial>
+          </monitorspec>
+        </disabled>
+      </configuration>
+      <configuration>
+        <layoutmode>logical</layoutmode>
+        <logicalmonitor>
+          <x>5120</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-2</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801172</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>2560</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-4</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801071</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-3</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801145</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <disabled>
+          <monitorspec>
+            <connector>HDMI-2</connector>
+            <vendor>BSE</vendor>
+            <product>Cinemate</product>
+            <serial>0x00000000</serial>
+          </monitorspec>
+        </disabled>
+      </configuration>
+    </monitors>
+  '';
 }
