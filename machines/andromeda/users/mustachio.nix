@@ -240,29 +240,23 @@ in
     autosuggestion.enable = true;
     syntaxHighlighting.enable = true;
 
-    plugins = [
-      {
-        name = "powerlevel10k";
-        src = pkgs.zsh-powerlevel10k;
-        file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-      }
-      {
-        name = "powerlevel10k-config";
-        src = ./dotfiles;
-        file = "p10k.zsh";
-      }
-    ];
-
     oh-my-zsh = {
       enable = true;
       plugins = [
-        "git"
+        "gitfast"
+        "safe-paste"
       ];
     };
     shellAliases = {
       rebuild = "nix run /home/mustachio/nixos-config/machines/andromeda#deploy-andromeda";
     };
     history.size = 10000;
+  };
+
+  programs.oh-my-posh = {
+    enable = true;
+    enableZshIntegration = true;
+    configFile = ./dotfiles/monokai.omp.json;
   };
 
   # This value determines the home Manager release that your
