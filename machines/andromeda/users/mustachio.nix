@@ -185,6 +185,13 @@ in
     base04 = "f9cc6c"; # Make yellow great again
   };
 
+  stylix.targets.vencord = {
+    enable = true;
+    colors.override = {
+      base0B = "f9cc6c"; # Make yellow great again
+    };
+  };
+
   home = {
     sessionPath = [
       "/home/mustachio/.npm-global/bin"
