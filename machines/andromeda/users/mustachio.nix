@@ -192,6 +192,8 @@ in
     };
   };
 
+  programs.mangohud.enable = true;
+
   home = {
     sessionPath = [
       "/home/mustachio/.npm-global/bin"

@@ -110,6 +110,8 @@
     gamescopeSession.enable = true;
   };
 
+  programs.gamemode.enable = true;
+
   programs.nh = {
     enable = true;
     clean.enable = true;

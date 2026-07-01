@@ -19,6 +19,9 @@
     gnomeExtensions.search-light
     gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.appindicator
+    gnomeExtensions.color-picker
+    gnomeExtensions.vitals
+    gnomeExtensions.just-perfection
   ];
 
   dconf = {
@@ -26,6 +29,7 @@
     settings = {
       "org/gnome/desktop/interface" = {
         accent-color = "yellow";
+        # Below 2 are managed by stylix. Keeping commented for reference.
         # color-scheme = lib.mkForce "prefer-dark";
         # gtk-theme = lib.mkForce "WhiteSur-Dark-solid";
         icon-theme = lib.mkForce "WhiteSur-dark";
@@ -94,6 +98,9 @@
           search-light.extensionUuid
           gnome-40-ui-improvements.extensionUuid
           appindicator.extensionUuid
+          color-picker.extensionUuid
+          vitals.extensionUuid
+          just-perfection.extensionUuid
         ];
         favorite-apps = [
           "librewolf.desktop"
