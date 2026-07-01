@@ -24,6 +24,10 @@
       url = "github:Gerg-L/spicetify-nix";
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
+    stylix = {
+      url = "github:nix-community/stylix/release-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   outputs =
@@ -35,6 +39,7 @@
       nix-jetbrains-plugins,
       agenix,
       spicetify-nix,
+      stylix,
       ...
     }:
     let
@@ -91,6 +96,7 @@
         };
 
         modules = [
+          stylix.nixosModules.stylix
           ./configuration.nix
           agenix.nixosModules.default
           {

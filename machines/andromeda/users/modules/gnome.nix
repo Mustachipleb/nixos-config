@@ -2,6 +2,7 @@
   config,
   pkgs,
   nixpkgs-unstable,
+  lib,
   ...
 }:
 
@@ -25,16 +26,16 @@
     settings = {
       "org/gnome/desktop/interface" = {
         accent-color = "yellow";
-        color-scheme = "prefer-dark";
-        gtk-theme = "WhiteSur-Dark-solid";
-        icon-theme = "WhiteSur-dark";
-        cursor-theme = "WhiteSur-cursors";
+        # color-scheme = lib.mkForce "prefer-dark";
+        # gtk-theme = lib.mkForce "WhiteSur-Dark-solid";
+        icon-theme = lib.mkForce "WhiteSur-dark";
+        cursor-theme = lib.mkForce "WhiteSur-cursors";
       };
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
-        picture-options = "spanned";
-        picture-uri = "file:///home/mustachio/.cache/org.gabmus.hydrapaper/merged_wallpaper.png";
-        picture-uri-dark = "file:///home/mustachio/.cache/org.gabmus.hydrapaper/merged_wallpaper_dark.png";
+        picture-options = lib.mkForce "spanned";
+        picture-uri = "file:///home/mustachio/nixos-config/machines/andromeda/users/wallpaper.png";
+        picture-uri-dark = "file:///home/mustachio/nixos-config/machines/andromeda/users/wallpaper.png";
         primary-color = "#241f31";
         secondary-color = "#000000";
       };
@@ -111,7 +112,7 @@
         remember-mount-password = true;
       };
       "org/gnome/shell/extensions/user-theme" = {
-        name = "WhiteSur-Dark-solid";
+        # name = "WhiteSur-Dark-solid";
       };
     };
   };
