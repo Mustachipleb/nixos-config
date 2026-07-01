@@ -15,13 +15,12 @@
     gnomeExtensions.user-themes
     gnomeExtensions.dash-to-dock
     gnomeExtensions.blur-my-shell
-    gnomeExtensions.show-desktop-button
     gnomeExtensions.search-light
-    gnomeExtensions.gnome-40-ui-improvements
     gnomeExtensions.appindicator
     gnomeExtensions.color-picker
     gnomeExtensions.vitals
     gnomeExtensions.just-perfection
+    gnomeExtensions.multi-monitor-bar
   ];
 
   dconf = {
@@ -35,6 +34,10 @@
         icon-theme = lib.mkForce "WhiteSur-dark";
         cursor-theme = lib.mkForce "WhiteSur-cursors";
       };
+      # Managed by stylix as well
+      # "org/gnome/shell/extensions/user-theme" = {
+      #   name = "WhiteSur-Dark-solid";
+      #  };
       "org/gnome/desktop/background" = {
         color-shading-type = "solid";
         picture-options = lib.mkForce "spanned";
@@ -93,14 +96,13 @@
         enabled-extensions = with nixpkgs-unstable.gnomeExtensions; [
           user-themes.extensionUuid
           dash-to-dock.extensionUuid
-          show-desktop-button.extensionUuid
           blur-my-shell.extensionUuid
           search-light.extensionUuid
-          gnome-40-ui-improvements.extensionUuid
           appindicator.extensionUuid
           color-picker.extensionUuid
           vitals.extensionUuid
           just-perfection.extensionUuid
+          multi-monitor-bar.extensionUuid
         ];
         favorite-apps = [
           "librewolf.desktop"
@@ -118,8 +120,62 @@
         ];
         remember-mount-password = true;
       };
-      "org/gnome/shell/extensions/user-theme" = {
-        # name = "WhiteSur-Dark-solid";
+      "org/gnome/shell/extensions/vitals" = {
+        fixed-widths = true;
+        hide-icons = false;
+        hide-zeros = false;
+        icon-style = 0;
+        include-public-ip = false;
+        include-static-gpu-info = false;
+        menu-centered = false;
+        network-public-ip-show-flag = false;
+        network-speed-format = 0;
+        position-in-panel = 0;
+        show-battery = false;
+        show-gpu = true;
+        show-network = true;
+        update-time = 5;
+        use-higher-precision = false;
+      };
+      "org/gnome/shell/extensions/multi-monitors-bar" = {
+        force-workspaces-on-all-displays = true;
+        panel-color = "rgb(26,22,22)";
+        show-activities = false;
+        show-app-menu = false;
+        show-date-time = true;
+        show-overview-on-extended-monitors = true;
+        show-panel = true;
+        thumbnails-slider-position = "none";
+      };
+      "org/gnome/shell/extensions/just-perfection" = {
+        accent-color-icon = false;
+        accessibility-menu = true;
+        activities-button = true;
+        calendar = false;
+        clock-menu = true;
+        dash-icon-size = 0;
+        events-button = false;
+        keyboard-layout = true;
+        panel = true;
+        panel-icon-size = 0;
+        panel-in-overview = true;
+        power-icon = true;
+        quick-settings = true;
+        quick-settings-dark-mode = true;
+        quick-settings-do-not-disturb = false;
+        quick-settings-night-light = true;
+        ripple-box = true;
+        search = true;
+        show-apps-button = true;
+        startup-status = 0;
+        support-notifier-type = 0;
+        theme = true;
+        window-demands-attention-focus = false;
+        window-picker-icon = true;
+        workspace = true;
+        workspace-wrap-around = false;
+        workspaces-in-app-grid = true;
+        world-clock = false;
       };
     };
   };
