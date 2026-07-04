@@ -106,6 +106,7 @@
           {
             home-manager.useGlobalPkgs = true;
             home-manager.useUserPackages = true;
+            home-manager.sharedModules = [ agenix.homeManagerModules.default ];
 
             home-manager.users.mustachio = import ./users/mustachio.nix;
 

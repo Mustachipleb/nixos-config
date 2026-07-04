@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   lock-false = {
@@ -103,27 +103,22 @@ in
   age.secrets = {
     "ublock.config.txt" = {
       file = ./secrets/ublock.config.age;
-      owner = "mustachio";
       path = "${extension-config-path}/ublock.config.txt";
     };
     "enhancer-for-youtube.config.txt" = {
       file = ./secrets/enhancer-for-youtube.config.age;
-      owner = "mustachio";
       path = "${extension-config-path}/enhancer-for-youtube.config.txt";
     };
     "dearrow.config.json" = {
       file = ./secrets/dearrow.config.age;
-      owner = "mustachio";
       path = "${extension-config-path}/dearrow.config.json";
     };
     "bookmarks.json" = {
       file = ./secrets/bookmarks.age;
-      owner = "mustachio";
       path = "${extension-config-path}/bookmarks.json";
     };
     "sponsorblock.config.json" = {
       file = ./secrets/sponsorblock.config.age;
-      owner = "mustachio";
       path = "${extension-config-path}/sponsorblock.config.json";
     };
   };

@@ -115,6 +115,7 @@ in
 {
   imports = [
     ./modules/gnome.nix
+    ./modules/browser/librewolf.nix
     spicetify-nix.homeManagerModules.spicetify
   ];
 

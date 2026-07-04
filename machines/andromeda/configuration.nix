@@ -15,7 +15,6 @@
     ./hardware-configuration.nix
     ./modules/graphics.nix
     ./modules/gnome.nix
-    ./modules/browser/librewolf.nix
     ./modules/mounts.nix
   ];
 
@@ -129,8 +128,6 @@
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with nixpkgs-unstable; [
-    librewolf
-
     hydrapaper # Spanned wallpaper config
     sshfs # Needed for network mounts with fuse
     nixfmt # Nix file formatter
