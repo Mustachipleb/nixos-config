@@ -3,7 +3,6 @@
   pkgs,
   nixpkgs-unstable,
   system,
-  nix-jetbrains-plugins,
   spicetify-nix,
   ...
 }:
@@ -11,26 +10,6 @@
 # Packages that should be installed to the user profile.
 let
   spicePkgs = spicetify-nix.legacyPackages.${system};
-  ideaPluginBase = nix-jetbrains-plugins.plugins.${system}.idea."2026.1.3";
-  webstormPlugins = map (p: ideaPluginBase.${p}) [
-    "nix-idea"
-    "org.jetbrains.junie"
-    "zielu.gittoolbox"
-    "com.intellij.ml.llm"
-    "izhangzhihao.rainbow.brackets"
-    "monokai-pro"
-  ];
-  riderPlugins = map (p: ideaPluginBase.${p}) [
-    "org.jetbrains.junie"
-    "zielu.gittoolbox"
-    "com.intellij.ml.llm"
-    "izhangzhihao.rainbow.brackets"
-    "monokai-pro"
-  ];
-  editorPackages = with pkgs; [
-    (nixpkgs-unstable.jetbrains.plugins.addPlugins nixpkgs-unstable.jetbrains.webstorm webstormPlugins)
-    (nixpkgs-unstable.jetbrains.plugins.addPlugins nixpkgs-unstable.jetbrains.rider riderPlugins)
-  ];
 
   # De vuilbak
   miscPackages = with nixpkgs-unstable; [
@@ -116,59 +95,18 @@ in
   imports = [
     ./modules/gnome.nix
     ./modules/browser/librewolf.nix
+    ./modules/shell/shell.nix
+    ./modules/jetbrains.nix
+    ./modules/git.nix
     spicetify-nix.homeManagerModules.spicetify
   ];
 
   home.username = "mustachio";
   home.homeDirectory = "/home/mustachio";
 
-  xdg.mimeApps = {
-    enable = true;
+  xdg.mimeApps.enable = true;
 
-    defaultApplications = {
-      "text/html" = "librewolf.desktop";
-      "x-scheme-handler/http" = "librewolf.desktop";
-      "x-scheme-handler/https" = "librewolf.desktop";
-      "x-scheme-handler/about" = "librewolf.desktop";
-      "x-scheme-handler/unknown" = "librewolf.desktop";
-    };
-  };
-
-  # Import files from the current configuration directory into the Nix store,
-  # and create symbolic links pointing to those store files in the Home directory.
-
-  # home.file.".config/i3/wallpaper.jpg".source = ./wallpaper.jpg;
-
-  # Import the scripts directory into the Nix store,
-  # and recursively generate symbolic links in the Home directory pointing to the files in the store.
-  # home.file.".config/i3/scripts" = {
-  #   source = ./scripts;
-  #   recursive = true;   # link recursively
-  #   executable = true;  # make all files executable
-  # };
-
-  # encode the file content in nix configuration file directly
-  # home.file.".xxx".text = ''
-  #     xxx
-  # '';
-
-  home.packages = editorPackages ++ miscPackages;
-
-  # basic configuration of git
-  programs.git = {
-    enable = true;
-    settings = {
-      user.name = "Nicolas Van Damme";
-      user.email = "mustachio@dragonlegion.be";
-    };
-  };
-
-  programs.gh = {
-    enable = true;
-    gitCredentialHelper = {
-      enable = true;
-    };
-  };
+  home.packages = miscPackages;
 
   programs.spicetify = {
     enable = true;
@@ -194,42 +132,6 @@ in
   };
 
   programs.mangohud.enable = true;
-
-  home = {
-    sessionPath = [
-      "/home/mustachio/.npm-global/bin"
-    ];
-  };
-
-  programs.zsh = {
-    enable = true;
-    enableCompletion = true;
-    autosuggestion.enable = true;
-    syntaxHighlighting.enable = true;
-
-    oh-my-zsh = {
-      enable = true;
-      plugins = [
-        "gitfast"
-        "safe-paste"
-      ];
-    };
-    shellAliases = {
-      rebuild = "nix run /home/mustachio/nixos-config/machines/andromeda#deploy-andromeda";
-    };
-    history.size = 10000;
-  };
-
-  programs.oh-my-posh = {
-    enable = true;
-    enableZshIntegration = true;
-    configFile = ./dotfiles/monokai.omp.json;
-  };
-
-  programs.zoxide = {
-    enable = true;
-    enableZshIntegration = true;
-  };
 
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
