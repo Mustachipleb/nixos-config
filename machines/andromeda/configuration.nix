@@ -32,6 +32,10 @@
   networking.hostName = "andromeda"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
+  # FIXME: Need to be disabled so long as mount folders are under home. Otherwise it will index the NAS and that's not nice.
+  services.gnome.localsearch.enable = false;
+  services.gnome.tinysparql.enable = false;
+
   # Enable networking
   networking.networkmanager = {
     enable = true;
