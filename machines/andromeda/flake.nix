@@ -108,6 +108,7 @@
             home-manager.useUserPackages = true;
             home-manager.sharedModules = [ agenix.homeManagerModules.default ];
 
+            home-manager.backupFileExtension = "hm-backup";
             home-manager.users.mustachio = import ./users/mustachio.nix;
 
             # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
