@@ -16,6 +16,8 @@ in
     enable = true;
     package = pkgs.librewolf;
     policies = {
+      AppAutoUpdate = false;
+      BackgroundAppUpdate = false;
       DisableTelemetry = true;
       DisableFirefoxStudies = true;
       EnableTrackingProtection = {
@@ -23,12 +25,26 @@ in
         Locked = true;
         Cryptomining = true;
         Fingerprinting = true;
+        EmailTracking = true;
       };
+      EncryptedMediaExtensions = {
+        Enabled = true;
+        Locked = true;
+      };
+      DisableBuiltinPDFViewer = true; # Considered a security liability
+      OfferToSaveLogins = false;
+      DisableFormHistory = true;
+      HardwareAcceleration = true; # Exposes points for fingerprinting, but performance improves
+      DisableSetDesktopBackground = true;
+      DisableProfileRefresh = true;
+      DisableProfileImport = true;
       DisablePocket = true;
       DisableFirefoxAccounts = true;
-      DisableAccounts = true;
+      DisableAccounts = false;
+      PasswordManagerEnabled = false;
       DisableFirefoxScreenshots = true;
       DontCheckDefaultBrowser = true;
+      NoDefaultBookmarks = true;
       DisplayBookmarksToolbar = "always";
       SearchBar = "unified";
       Preferences = {
@@ -65,8 +81,13 @@ in
         "browser.policies.runOncePerModification.setDefaultSearchEngine" = "Kagi";
         "sidebar.verticalTabs" = lock-true;
       };
+
+      ExtensionUpdate = false;
       ExtensionSettings = {
-        "*".installation_mode = "blocked"; # blocks all addons except the ones specified below
+        "*" = {
+          installation_mode = "blocked";
+          blocked_install_message = "Add to nix config instead.";
+        };
         "uBlock0@raymondhill.net" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/ublock-origin/latest.xpi";
           installation_mode = "force_installed";
@@ -95,6 +116,53 @@ in
         "enhancerforyoutube@maximerf.addons.mozilla.org" = {
           install_url = "https://www.mrfdev.com/downloads/enhancer_for_youtube-2.0.130.1.xpi";
           installation_mode = "force_installed";
+        };
+      };
+
+      PDFjs = {
+        Enabled = false;
+        EnablePermissions = false;
+      };
+      Handlers = {
+        mimeTypes."application/pdf".action = "saveToDisk";
+      };
+      extensions = {
+        pdf = {
+          action = "useHelperApp";
+          ask = true;
+          handlers = [
+            {
+              name = "GNOME Document Viewer";
+              path = "${pkgs.evince}/bin/evince";
+            }
+          ];
+        };
+      };
+
+      PromptForDownloadLocation = true;
+      StartDownloadsInTempDirectory = true;
+
+      UserMessaging = {
+        ExtensionRecommendations = false; # Don’t recommend extensions while the user is visiting web pages
+        FeatureRecommendations = false; # Don’t recommend browser features
+        Locked = true; # Prevent the user from changing user messaging preferences
+        MoreFromMozilla = false; # Don’t show the “More from Mozilla” section in Preferences
+        SkipOnboarding = true; # Don’t show onboarding messages on the new tab page
+        UrlbarInterventions = false; # Don’t offer suggestions in the URL bar
+        WhatsNew = false; # Remove the “What’s New” icon and menuitem
+      };
+      UseSystemPrintDialog = true;
+    };
+
+    profiles = {
+      default = {
+        id = 0;
+        name = "default";
+        isDefault = true;
+        settings = {
+          "browser.startup.homepage" = "https://kagi.com/";
+          "browser.search.defaultenginename" = "Kagi";
+          "browser.search.order.1" = "Kagi";
         };
       };
     };
