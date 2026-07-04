@@ -83,6 +83,8 @@ in
       };
 
       ExtensionUpdate = false;
+
+      # Use `nix run github:tupakkatapa/mozid -- [url-to-addon]` to get extension ID.
       ExtensionSettings = {
         "*" = {
           installation_mode = "blocked";
@@ -115,6 +117,10 @@ in
         };
         "enhancerforyoutube@maximerf.addons.mozilla.org" = {
           install_url = "https://www.mrfdev.com/downloads/enhancer_for_youtube-2.0.130.1.xpi";
+          installation_mode = "force_installed";
+        };
+        "FirefoxColor@mozilla.com" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/file/3643624/firefox_color-2.1.7.xpi";
           installation_mode = "force_installed";
         };
       };
@@ -152,6 +158,30 @@ in
         WhatsNew = false; # Remove the “What’s New” icon and menuitem
       };
       UseSystemPrintDialog = true;
+
+      SearchEngines = {
+        PreventInstalls = true;
+        Add = [
+          {
+            Name = "Kagi";
+            URLTemplate = "https://kagi.com/search?q={searchTerms}";
+            Method = "GET";
+            IconURL = "https://kagi.com/favicon.ico";
+            SuggestURLTemplate = "https://kagi.com/api/autosuggest?q={searchTerms}";
+          }
+        ];
+        Remove = [
+          "Amazon.com"
+          "Bing"
+          "Google"
+          "DuckDuckGo"
+          "MetaGer"
+          "Mojeek"
+          "Searx Belgium"
+          "Startpage"
+        ];
+        Default = "Kagi";
+      };
     };
 
     profiles = {
