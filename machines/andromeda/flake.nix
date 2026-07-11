@@ -55,6 +55,7 @@
           self = inputs.self;
         in
         self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
+      system.nixos.label = self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
 
       formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
       packages.${system}.deploy-andromeda = nixpkgs.legacyPackages.${system}.writeShellApplication {
