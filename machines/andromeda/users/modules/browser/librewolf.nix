@@ -123,6 +123,10 @@ in
           install_url = "https://addons.mozilla.org/firefox/downloads/file/3643624/firefox_color-2.1.7.xpi";
           installation_mode = "force_installed";
         };
+        "myallychou@gmail.com" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/file/4733035/youtube_recommended_videos-1.6.9.xpi";
+          installation_mode = "force_installed";
+        };
       };
 
       PDFjs = {
