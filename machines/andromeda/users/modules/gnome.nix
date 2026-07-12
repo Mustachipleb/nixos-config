@@ -381,6 +381,72 @@
           </monitorspec>
         </disabled>
       </configuration>
+      <configuration>
+        <layoutmode>logical</layoutmode>
+        <logicalmonitor>
+          <x>5120</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-1</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801172</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>2560</x>
+          <y>0</y>
+          <scale>1</scale>
+          <primary>yes</primary>
+          <monitor>
+            <monitorspec>
+              <connector>DP-3</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801071</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <logicalmonitor>
+          <x>0</x>
+          <y>0</y>
+          <scale>1</scale>
+          <monitor>
+            <monitorspec>
+              <connector>DP-2</connector>
+              <vendor>MSI</vendor>
+              <product>MSI G273Q</product>
+              <serial>CA8A402801145</serial>
+            </monitorspec>
+            <mode>
+              <width>2560</width>
+              <height>1440</height>
+              <rate>164.835</rate>
+            </mode>
+          </monitor>
+        </logicalmonitor>
+        <disabled>
+          <monitorspec>
+            <connector>HDMI-1</connector>
+            <vendor>BSE</vendor>
+            <product>Cinemate</product>
+            <serial>0x00000000</serial>
+          </monitorspec>
+        </disabled>
+      </configuration>
     </monitors>
   '';
 }

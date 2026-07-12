@@ -5,6 +5,17 @@
     enable = true;
   };
 
+  boot.initrd.kernelModules = [
+    "nvidia"
+    "nvidia_modeset"
+    "nvidia_drm"
+    "nvidia_uvm"
+  ];
+  boot.kernelParams = [
+    "nvidia-drm.modeset=1"
+    "fbdev=1"
+  ];
+
   # Load nvidia driver for Xorg and Wayland
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -36,5 +47,7 @@
 
     # Optionally, you may need to select the appropriate driver version for your specific GPU.
     package = config.boot.kernelPackages.nvidiaPackages.beta;
+
+    nvidiaPersistenced = true;
   };
 }
