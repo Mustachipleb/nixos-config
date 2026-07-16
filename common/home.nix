@@ -19,7 +19,7 @@
       enable = true;
     };
     shellAliases = {
-      rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/${vars.primaryUser}/nixos-config/machines/${vars.machineName}/configuration.nix";
+      rebuild = "sudo nixos-rebuild switch --flake /home/${vars.primaryUser}/nixos-config#${vars.machineName}";
     };
   };
 
@@ -29,12 +29,14 @@
 
   programs.git = {
     enable = true;
-    userName = "Mustachio";
-    userEmail = "mustachio@dragonlegion.be";
+    settings.user = {
+      name = "Mustachio";
+      email = "mustachio@dragonlegion.be";
+    };
   };
 
   programs.ssh = {
     enable = true;
-    addKeysToAgent = "yes";
+    settings."*".AddKeysToAgent = "yes";
   };
 }

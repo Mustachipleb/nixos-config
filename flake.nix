@@ -6,10 +6,6 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
-      # The `follows` keyword in inputs is used for inheritance.
-      # Here, `inputs.nixpkgs` of home-manager is kept consistent with
-      # the `inputs.nixpkgs` of the current flake,
-      # to avoid problems caused by different versions of nixpkgs.
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nix-jetbrains-plugins = {
@@ -49,16 +45,62 @@
         inherit system;
         config.allowUnfree = true;
       };
+      revision =
+        if self ? shortRev then
+          self.shortRev
+        else if self ? dirtyShortRev then
+          self.dirtyShortRev
+        else if self ? lastModified then
+          toString self.lastModified
+        else
+          "unknown";
+
+      baseSpecialArgs = {
+        inherit
+          agenix
+          nix-jetbrains-plugins
+          spicetify-nix
+          system
+          ;
+        nixpkgs-unstable = unstablePkgs;
+      };
+
+      revisionModule = {
+        system.configurationRevision = revision;
+        system.nixos.label = revision;
+      };
+
+      mkHomeManagerModule =
+        {
+          users,
+          sharedModules ? [ ],
+          backupFileExtension ? null,
+        }:
+        {
+          home-manager.useGlobalPkgs = true;
+          home-manager.useUserPackages = true;
+          home-manager.sharedModules = sharedModules;
+          home-manager.users = users;
+          home-manager.extraSpecialArgs = baseSpecialArgs;
+          home-manager.backupFileExtension = nixpkgs.lib.mkIf (
+            backupFileExtension != null
+          ) backupFileExtension;
+        };
+
+      mkHost =
+        {
+          modules,
+          specialArgs ? { },
+        }:
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = baseSpecialArgs // specialArgs;
+          modules = [ revisionModule ] ++ modules;
+        };
     in
     {
-      system.configurationRevision =
-        let
-          self = inputs.self;
-        in
-        self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
-      system.nixos.label = self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
-
       formatter.${system} = pkgs.nixfmt-tree;
+
       packages.${system}.deploy-andromeda = pkgs.writeShellApplication {
         name = "deploy-andromeda";
         runtimeInputs = with pkgs; [
@@ -92,44 +134,54 @@
           git push origin "''${tag}"
         '';
       };
+
       apps.${system}.deploy-andromeda = {
         type = "app";
         program = "${self.packages.${system}.deploy-andromeda}/bin/deploy-andromeda";
       };
-      nixosConfigurations.andromeda = nixpkgs.lib.nixosSystem {
-        inherit system;
 
-        specialArgs = {
-          nixpkgs-unstable = unstablePkgs;
+      nixosConfigurations = {
+        andromeda = mkHost {
+          modules = [
+            stylix.nixosModules.stylix
+            agenix.nixosModules.default
+            ./machines/andromeda/configuration.nix
+            {
+              environment.systemPackages = [ agenix.packages.${system}.default ];
+            }
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerModule {
+              users.mustachio = import ./machines/andromeda/users/mustachio.nix;
+              sharedModules = [ agenix.homeManagerModules.default ];
+              backupFileExtension = "hm-backup";
+            })
+          ];
         };
 
-        modules = [
-          stylix.nixosModules.stylix
-          ./configuration.nix
-          agenix.nixosModules.default
-          {
-            environment.systemPackages = [ agenix.packages.${system}.default ];
-          }
-          home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.sharedModules = [ agenix.homeManagerModules.default ];
+        circinus = mkHost {
+          modules = [
+            ./machines/circinus/configuration.nix
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerModule { users = { }; })
+          ];
+        };
 
-            home-manager.backupFileExtension = "hm-backup";
-            home-manager.users.mustachio = import ./users/mustachio.nix;
-
-            # Optionally, use home-manager.extraSpecialArgs to pass arguments to mustachio.nix
-            home-manager.extraSpecialArgs = {
-              inherit system nix-jetbrains-plugins spicetify-nix;
-              nixpkgs-unstable = unstablePkgs;
-            };
-          }
-        ];
+        triangulum = mkHost {
+          modules = [
+            agenix.nixosModules.default
+            ./machines/triangulum/configuration.nix
+            {
+              environment.systemPackages = [ agenix.packages.${system}.default ];
+            }
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerModule { users = { }; })
+          ];
+        };
       };
+
       checks.${system} = {
         formatting =
-          pkgs.runCommand "andromeda-formatting-check"
+          pkgs.runCommand "formatting-check"
             {
               nativeBuildInputs = [ self.formatter.${system} ];
             }
@@ -144,6 +196,8 @@
               touch "$out"
             '';
         andromeda-build = self.nixosConfigurations.andromeda.config.system.build.toplevel;
+        circinus-build = self.nixosConfigurations.circinus.config.system.build.toplevel;
+        triangulum-build = self.nixosConfigurations.triangulum.config.system.build.toplevel;
       };
     };
 }

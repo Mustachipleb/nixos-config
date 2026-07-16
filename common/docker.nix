@@ -2,14 +2,12 @@
   lib,
   pkgs,
   config,
+  nixpkgs-unstable,
   ...
 }:
 with lib;
 let
   cfg = config.services.drlg.docker;
-  # sudo nix-channel --add https://nixos.org/channels/nixos-unstable nixos-unstable
-  # sudo nix-channel --update
-  unstable = import <nixos-unstable> { config = { }; };
 in
 {
   options.services.drlg.docker = {
@@ -29,11 +27,11 @@ in
   config = mkIf cfg.enable {
     virtualisation.docker = {
       enable = true;
-      package = unstable.docker;
+      package = nixpkgs-unstable.docker;
       # trace = builtins.trace "Using Docker version: ${unstable.docker_27.version}" null;
       rootless = {
         enable = cfg.rootless;
-        package = unstable.docker;
+        package = nixpkgs-unstable.docker;
         setSocketVariable = true;
         daemon = mkIf cfg.cdi {
           settings = {

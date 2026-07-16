@@ -21,7 +21,7 @@
       ];
     };
     shellAliases = {
-      rebuild = "nix run /home/mustachio/nixos-config/machines/andromeda#deploy-andromeda";
+      rebuild = "nix run /home/mustachio/nixos-config#deploy-andromeda";
     };
     history.size = 10000;
   };

@@ -9,8 +9,6 @@
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    <home-manager/nixos>
-    (fetchTarball "https://github.com/nix-community/nixos-vscode-server/tarball/master")
   ];
 
   nixpkgs.config.allowUnfree = true;
@@ -93,7 +91,7 @@
           enable = true;
         };
         shellAliases = {
-          rebuild = "sudo nixos-rebuild switch -I nixos-config=/home/mustachio/config/machines/box1/configuration.nix";
+          rebuild = "sudo nixos-rebuild switch --flake /home/mustachio/nixos-config#circinus";
         };
       };
 
@@ -103,8 +101,10 @@
 
       programs.git = {
         enable = true;
-        userName = "Mustachio";
-        userEmail = "mustachio@dragonlegion.be";
+        settings.user = {
+          name = "Mustachio";
+          email = "mustachio@dragonlegion.be";
+        };
       };
 
       home.stateVersion = "24.05";
@@ -143,18 +143,15 @@
     enable = true;
     securityType = "user";
     openFirewall = true;
-    extraConfig = ''
-      workgroup = WORKGROUP
-      server string = smbnix
-      netbios name = smbnix
-      security = user 
-      #use sendfile = yes
-      #max protocol = smb2
-      # note: localhost is the ipv6 localhost ::1
-      hosts allow = 192.168.1. 192.168.0. 127.0.0.1 localhost
-      hosts deny = 0.0.0.0/0
-      ntlm auth = true
-    '';
+    settings = {
+      workgroup = "WORKGROUP";
+      "server string" = "smbnix";
+      "netbios name" = "smbnix";
+      security = "user";
+      "hosts allow" = "192.168.1. 192.168.0. 127.0.0.1 localhost";
+      "hosts deny" = "0.0.0.0/0";
+      "ntlm auth" = true;
+    };
     shares = {
       home = {
         "path" = "/home/mustachio";
@@ -184,12 +181,12 @@
     path = [ pkgs.docker ];
   };
 
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = false;
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
+  };
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];

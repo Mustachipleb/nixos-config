@@ -119,7 +119,7 @@
     enable = true;
     clean.enable = true;
     clean.extraArgs = "--keep-since 7d --keep 5";
-    flake = "/home/mustachio/nixos-config/machines/andromeda"; # sets NH_OS_FLAKE variable for you
+    flake = "/home/mustachio/nixos-config"; # sets NH_OS_FLAKE variable for you
   };
 
   # Enables running generic binaries through NixOS.

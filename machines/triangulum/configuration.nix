@@ -2,25 +2,23 @@
   config,
   lib,
   pkgs,
+  agenix,
   ...
 }:
 
 let
   vars = import ./vars.nix;
-  agenixVersion = "0.15.0";
 in
 {
   imports = [
     # Include the results of the hardware scan.
     ./hardware-configuration.nix
-    <home-manager/nixos>
     ../../common/ssh.nix
     ../../common/powermgmt.nix
     ../../common/docker.nix
     ../../common/network.nix
     ../../common/gpu/nvidia.nix
     #../../../dragonlegion.be/docker-compose.nix
-    "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/modules/age.nix"
   ];
 
   boot.loader = {
@@ -74,17 +72,17 @@ in
     graphics.enable = true;
   };
 
-  services.logind.extraConfig = ''
-    HandleLidSwitch=ignore
-    HandleLidSwitchDocked=ignore
-  '';
+  services.logind.settings.Login = {
+    HandleLidSwitch = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
 
-  systemd.sleep.extraConfig = ''
-    AllowSuspend=no
-    AllowHibernation=no
-    AllowHybridSleep=no
-    AllowSuspendThenHibernate=no
-  '';
+  systemd.sleep.settings.Sleep = {
+    AllowSuspend = false;
+    AllowHibernation = false;
+    AllowHybridSleep = false;
+    AllowSuspendThenHibernate = false;
+  };
 
   users.users = {
     mustachio =
@@ -121,10 +119,7 @@ in
     git
     git-crypt
     compose2nix
-    (pkgs.callPackage
-      "${builtins.fetchTarball "https://github.com/ryantm/agenix/archive/${agenixVersion}.tar.gz"}/pkgs/agenix.nix"
-      { }
-    )
+    agenix.packages.${pkgs.system}.default
     lm_sensors
     htop
     thermald
