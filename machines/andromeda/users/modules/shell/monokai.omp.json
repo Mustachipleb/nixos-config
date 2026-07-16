@@ -66,7 +66,7 @@
             "cache_duration": "none",
             "time_format": "15:04:05"
           },
-          "template": "{{.CurrentDate | date .Format}} ❯",
+          "template": "{{ .HostName }} - {{.CurrentDate | date .Format}} ❯",
           "foreground": "#fd6883",
           "type": "time",
           "style": "plain"
