@@ -44,6 +44,7 @@
     }:
     let
       system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
       unstablePkgs = import nixpkgs-unstable {
         inherit system;
         config.allowUnfree = true;
@@ -57,10 +58,10 @@
         self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
       system.nixos.label = self.shortRev or self.dirtyShortRev or self.lastModified or "unknown";
 
-      formatter.x86_64-linux = nixpkgs.legacyPackages.${system}.nixfmt-tree;
-      packages.${system}.deploy-andromeda = nixpkgs.legacyPackages.${system}.writeShellApplication {
+      formatter.${system} = pkgs.nixfmt-tree;
+      packages.${system}.deploy-andromeda = pkgs.writeShellApplication {
         name = "deploy-andromeda";
-        runtimeInputs = with nixpkgs.legacyPackages.${system}; [
+        runtimeInputs = with pkgs; [
           git
           gnugrep
           gawk
@@ -125,6 +126,24 @@
             };
           }
         ];
+      };
+      checks.${system} = {
+        formatting =
+          pkgs.runCommand "andromeda-formatting-check"
+            {
+              nativeBuildInputs = [ self.formatter.${system} ];
+            }
+            ''
+              export HOME="$TMPDIR"
+              cp -r ${./.} source
+              chmod -R u+w source
+              cd source
+
+              treefmt --ci --tree-root "$PWD" .
+
+              touch "$out"
+            '';
+        andromeda-build = self.nixosConfigurations.andromeda.config.system.build.toplevel;
       };
     };
 }
