@@ -99,6 +99,14 @@
         };
     in
     {
+      nixosModules = {
+        example-teapot = import ./modules/nixos/example-teapot.nix;
+      };
+
+      homeManagerModules = {
+        example-teapot = import ./modules/home-manager/example-teapot.nix;
+      };
+
       formatter.${system} = pkgs.nixfmt-tree;
 
       packages.${system}.deploy-andromeda = pkgs.writeShellApplication {
@@ -152,7 +160,10 @@
             home-manager.nixosModules.home-manager
             (mkHomeManagerModule {
               users.mustachio = import ./machines/andromeda/users/mustachio.nix;
-              sharedModules = [ agenix.homeManagerModules.default ];
+              sharedModules = [
+                agenix.homeManagerModules.default
+                self.homeManagerModules.example-teapot
+              ];
               backupFileExtension = "hm-backup";
             })
           ];
