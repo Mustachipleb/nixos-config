@@ -103,9 +103,7 @@
         example-teapot = import ./modules/nixos/example-teapot.nix;
       };
 
-      homeManagerModules = {
-        example-teapot = import ./modules/home-manager/example-teapot.nix;
-      };
+      homeManagerModules = import ./modules/home-manager;
 
       formatter.${system} = pkgs.nixfmt-tree;
 
@@ -163,6 +161,7 @@
               sharedModules = [
                 agenix.homeManagerModules.default
                 self.homeManagerModules.example-teapot
+                self.homeManagerModules.shell
               ];
               backupFileExtension = "hm-backup";
             })
