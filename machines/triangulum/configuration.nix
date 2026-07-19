@@ -21,6 +21,8 @@ in
     #../../../dragonlegion.be/docker-compose.nix
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   boot.loader = {
     systemd-boot.enable = true;
     efi = {
