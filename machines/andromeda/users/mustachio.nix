@@ -144,6 +144,21 @@ in
     message = "Tea is operational.";
   };
 
+  programs.ssh = {
+    enable = true;
+
+    settings."*".AddKeysToAgent = "yes";
+
+    matchBlocks = {
+      circinus = {
+        hostname = "192.168.1.12";
+        user = "root";
+        identityFile = "~/.ssh/id_ed25519";
+        identitiesOnly = true;
+      };
+    };
+  };
+
   # This value determines the home Manager release that your
   # configuration is compatible with. This helps avoid breakage
   # when a new home Manager release introduces backwards
