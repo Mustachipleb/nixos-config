@@ -22,25 +22,15 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking.hostName = "nixos-box1"; # Define your hostname.
+  services.fstrim.enable = true;
+
+  networking.hostName = "circinus"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true; # Easiest to use and most distros use this by default.
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
-
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
-  # console = {
-  #   font = "Lat2-Terminus16";
-  #   keyMap = "us";
-  #   useXkbConfig = true; # use xkb.options in tty.
-  # };
 
   networking.firewall = {
     enable = true;
@@ -76,7 +66,11 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.mustachio = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    description = "Mustachio";
+    extraGroups = [
+      "wheel"
+      "docker"
+    ];
     openssh.authorizedKeys.keys = [
       "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOw3bIQ+Ss8sjcYU5QyADiVs+ymCcRw0/4mi/Yk3LGxI mustachio@andromeda.dragonlegion.be"
     ];
@@ -84,70 +78,20 @@
     shell = pkgs.zsh;
   };
 
-  home-manager.users.mustachio =
-    { pkgs, ... }:
-    {
-      home.packages = with pkgs; [
-        zsh
-        oh-my-zsh
-        starship
-        meslo-lgs-nf
-      ];
-
-      programs.zsh = {
-        enable = true;
-        oh-my-zsh = {
-          enable = true;
-        };
-        shellAliases = {
-          rebuild = "sudo nixos-rebuild switch --flake /home/mustachio/nixos-config#circinus";
-        };
-      };
-
-      programs.starship = {
-        enable = true;
-      };
-
-      programs.git = {
-        enable = true;
-        settings.user = {
-          name = "Mustachio";
-          email = "mustachio@dragonlegion.be";
-        };
-      };
-
-      home.stateVersion = "24.05";
-    };
-
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
   environment.systemPackages = with pkgs; [
-    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
     git
   ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
-
-  # List services that you want to enable:
-
-  # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    # require public key authentication for better security
     settings.PasswordAuthentication = false;
     settings.KbdInteractiveAuthentication = false;
-    #settings.PermitRootLogin = "yes";
+    settings.PermitRootLogin = "yes";
   };
-
   programs.ssh.startAgent = true;
 
+  # TODO: Decommission samba in favour of a fuse mount
   services.samba = {
     enable = true;
     securityType = "user";
@@ -177,6 +121,7 @@
   };
 
   systemd.services.compose = {
+    enable = false; # TODO: Rework needed
     script = ''
       docker compose -f /home/mustachio/docker/compose.yml up --remove-orphans
     '';
@@ -198,17 +143,6 @@
     AllowSuspendThenHibernate = false;
   };
 
-  # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
-
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
   #
@@ -227,5 +161,4 @@
   #
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "24.05"; # Did you read the comment?
-
 }

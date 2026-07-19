@@ -172,7 +172,13 @@
           modules = [
             ./machines/circinus/configuration.nix
             home-manager.nixosModules.home-manager
-            (mkHomeManagerModule { users = { }; })
+            (mkHomeManagerModule {
+              users.mustachio = import ./machines/circinus/users/mustachio.nix;
+              sharedModules = [
+                self.homeManagerModules.shell
+              ];
+              backupFileExtension = "hm-backup";
+            })
           ];
         };
 
