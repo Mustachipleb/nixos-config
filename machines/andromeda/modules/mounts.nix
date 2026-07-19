@@ -29,5 +29,5 @@ in
   fileSystems."/mnt/pinwheel_downloads" = mkSshfs "mustachio@192.168.1.11:/mnt/qbittorrent_downloads";
   fileSystems."/mnt/media" = mkSshfs "mustachio@192.168.1.112:/media";
   fileSystems."/mnt/backups" = mkSshfs "mustachio@192.168.1.112:/Backups";
-  fileSystems."/mnt/circinus" = mkSshfs "mustachio@circinus:/home/mustachio";
+  fileSystems."/mnt/circinus" = mkSshfs "mustachio@192.168.1.12:/home/mustachio";
 }

@@ -87,6 +87,9 @@ let
     obsidian
     protonmail-desktop
     synology-drive-client
+    pinta
+
+    prismlauncher
 
     httptoolkit
   ];
