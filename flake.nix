@@ -160,9 +160,9 @@
               users.mustachio = import ./machines/andromeda/users/mustachio.nix;
               sharedModules = [
                 agenix.homeManagerModules.default
-                self.homeManagerModules.example-teapot
                 self.homeManagerModules.shell
                 self.homeManagerModules.git
+                self.homeManagerModules.jetbrains
               ];
               backupFileExtension = "hm-backup";
             })

@@ -98,7 +98,6 @@ in
   imports = [
     ./modules/gnome.nix
     ./modules/browser/librewolf.nix
-    ./modules/jetbrains.nix
     spicetify-nix.homeManagerModules.spicetify
   ];
 
@@ -144,6 +143,35 @@ in
     git = {
       enable = true;
       enableGithub = true;
+    };
+
+    jetbrains = {
+      enable = true;
+
+      editors = {
+        webstorm = {
+          version = "2026.1.3";
+          plugins = [
+            "nix-idea"
+            "org.jetbrains.junie"
+            "zielu.gittoolbox"
+            "com.intellij.ml.llm"
+            "izhangzhihao.rainbow.brackets"
+            "monokai-pro"
+          ];
+        };
+
+        rider = {
+          version = "2026.1.3";
+          plugins = [
+            "org.jetbrains.junie"
+            "zielu.gittoolbox"
+            "com.intellij.ml.llm"
+            "izhangzhihao.rainbow.brackets"
+            "monokai-pro"
+          ];
+        };
+      };
     };
   };
 
