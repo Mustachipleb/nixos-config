@@ -162,6 +162,7 @@
                 agenix.homeManagerModules.default
                 self.homeManagerModules.example-teapot
                 self.homeManagerModules.shell
+                self.homeManagerModules.git
               ];
               backupFileExtension = "hm-backup";
             })
@@ -176,6 +177,7 @@
               users.mustachio = import ./machines/circinus/users/mustachio.nix;
               sharedModules = [
                 self.homeManagerModules.shell
+                self.homeManagerModules.git
               ];
               backupFileExtension = "hm-backup";
             })

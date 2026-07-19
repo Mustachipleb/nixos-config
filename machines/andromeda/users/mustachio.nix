@@ -99,7 +99,6 @@ in
     ./modules/gnome.nix
     ./modules/browser/librewolf.nix
     ./modules/jetbrains.nix
-    ./modules/git.nix
     spicetify-nix.homeManagerModules.spicetify
   ];
 
@@ -135,16 +134,17 @@ in
 
   programs.mangohud.enable = true;
 
-  drlg.shell = {
-    enable = true;
-    sessionPath = [ "/home/mustachio/.npm-global/bin" ];
-    rebuildCommand = "nix run /home/mustachio/nixos-config#deploy-andromeda";
-  };
+  drlg = {
+    shell = {
+      enable = true;
+      sessionPath = [ "/home/mustachio/.npm-global/bin" ];
+      rebuildCommand = "nix run /home/mustachio/nixos-config#deploy-andromeda";
+    };
 
-  drlg.examples.teapot = {
-    enable = true;
-    aliasName = "brew-check";
-    message = "Tea is operational.";
+    git = {
+      enable = true;
+      enableGithub = true;
+    };
   };
 
   programs.ssh = {
