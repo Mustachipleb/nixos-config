@@ -15,7 +15,7 @@
     gnomeExtensions.user-themes
     gnomeExtensions.dash-to-dock
     gnomeExtensions.blur-my-shell
-    gnomeExtensions.search-light
+    gnomeExtensions.search-light # TODO: Replace with https://git.salix.host/salix/searchlightng, but not yet available in gnome extensions so will have to build and install from source.
     gnomeExtensions.appindicator
     gnomeExtensions.color-picker
     gnomeExtensions.vitals

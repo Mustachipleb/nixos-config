@@ -3,4 +3,5 @@
   shell = import ./shell;
   git = import ./git.nix;
   jetbrains = import ./jetbrains.nix;
+  stylix = import ./stylix.nix;
 }

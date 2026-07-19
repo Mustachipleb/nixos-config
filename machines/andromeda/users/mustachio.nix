@@ -173,6 +173,10 @@ in
         };
       };
     };
+
+    stylix = {
+      enableMonokaiOverrides = true;
+    };
   };
 
   programs.ssh = {

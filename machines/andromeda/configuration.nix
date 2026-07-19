@@ -91,17 +91,9 @@
     ];
   };
 
-  stylix = {
+  drlg.stylix = {
     enable = true;
     autoEnable = true;
-    polarity = "dark";
-    base16Scheme = ./users/dotfiles/base16-monokai.yaml;
-    fonts = {
-      monospace = {
-        package = pkgs.fira-code;
-        name = "Fira Code";
-      };
-    };
   };
 
   # Allow unfree packages

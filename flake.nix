@@ -99,10 +99,7 @@
         };
     in
     {
-      nixosModules = {
-        example-teapot = import ./modules/nixos/example-teapot.nix;
-      };
-
+      nixosModules = import ./modules/nixos;
       homeManagerModules = import ./modules/home-manager;
 
       formatter.${system} = pkgs.nixfmt-tree;
@@ -150,6 +147,7 @@
         andromeda = mkHost {
           modules = [
             stylix.nixosModules.stylix
+            self.nixosModules.stylix
             agenix.nixosModules.default
             ./machines/andromeda/configuration.nix
             {
@@ -163,6 +161,7 @@
                 self.homeManagerModules.shell
                 self.homeManagerModules.git
                 self.homeManagerModules.jetbrains
+                self.homeManagerModules.stylix
               ];
               backupFileExtension = "hm-backup";
             })

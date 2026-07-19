@@ -29,7 +29,11 @@ in
           { name, ... }:
           {
             options = {
-              enable = lib.mkEnableOption "Whether to install this JetBrains IDE.";
+              enable = lib.mkOption {
+                type = lib.types.bool;
+                default = true;
+                description = "Whether to install this JetBrains IDE.";
+              };
 
               package = lib.mkOption {
                 type = lib.types.package;
