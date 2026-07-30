@@ -199,6 +199,8 @@
           modules = [
             ./machines/condor/configuration.nix
             self.nixosModules.powerManagement
+            self.nixosModules.sshfs
+            self.nixosModules.nfs
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             (mkHomeManagerModule {

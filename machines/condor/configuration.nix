@@ -104,6 +104,33 @@
     disableTlp = true;
   };
 
+  drlg.sshfs = {
+    enable = true;
+    identityFile = "/home/mustachio/.ssh/id_ed25519";
+    mounts = {
+      "/mnt/backups" = {
+        host = "192.168.1.112";
+        user = "mustachio";
+        path = "/Backups";
+      };
+      "/mnt/temp-qbit" = {
+        host = "192.168.1.11";
+        user = "mustachio";
+        path = "/mnt/qbittorrent_downloads";
+      };
+    };
+  };
+
+  drlg.nfs = {
+    enable = true;
+    mounts = {
+      "/mnt/synology" = {
+        host = "192.168.1.112";
+        path = "/volume1/media";
+      };
+    };
+  };
+
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     80
