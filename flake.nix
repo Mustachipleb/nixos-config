@@ -198,6 +198,7 @@
         condor = mkHost {
           modules = [
             ./machines/condor/configuration.nix
+            self.nixosModules.powerManagement
             agenix.nixosModules.default
             home-manager.nixosModules.home-manager
             (mkHomeManagerModule {
@@ -232,6 +233,7 @@
         andromeda-build = self.nixosConfigurations.andromeda.config.system.build.toplevel;
         circinus-build = self.nixosConfigurations.circinus.config.system.build.toplevel;
         triangulum-build = self.nixosConfigurations.triangulum.config.system.build.toplevel;
+        condor-build = self.nixosConfigurations.condor.config.system.build.toplevel;
       };
     };
 }

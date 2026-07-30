@@ -11,6 +11,11 @@
     ./hardware-configuration.nix
   ];
 
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
+
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.device = "nodev";
@@ -88,28 +93,16 @@
   };
   programs.ssh.startAgent = true;
 
-  systemd.sleep.settings.Sleep = {
-    AllowSuspend = false;
-    AllowHibernation = false;
-    AllowHybridSleep = false;
-    AllowSuspendThenHibernate = false;
+  drlg.powerManagement = {
+    enable = true;
+
+    preventSleep = true;
+    preventHddSpindown = true;
+    disableUsbAutosuspend = true;
+
+    disablePowertopAutoTune = true;
+    disableTlp = true;
   };
-  systemd.targets.sleep.enable = false;
-  systemd.targets.suspend.enable = false;
-  systemd.targets.hibernate.enable = false;
-  systemd.targets.hybrid-sleep.enable = false;
-  services.udev.extraRules =
-    let
-      mkRule = as: lib.concatStringsSep ", " as;
-    in
-    mkRule [
-      ''ACTION=="add|change"''
-      ''SUBSYSTEM=="block"''
-      ''KERNEL=="sd[a-z]"''
-      ''ATTR{queue/rotational}=="1"''
-      ''RUN+="${pkgs.hdparm}/bin/hdparm -B 254 -S 0 /dev/%k"''
-    ];
-  powerManagement.powertop.enable = false;
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
