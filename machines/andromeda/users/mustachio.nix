@@ -92,6 +92,7 @@ let
     prismlauncher
 
     httptoolkit
+    libreoffice-fresh
   ];
 in
 {

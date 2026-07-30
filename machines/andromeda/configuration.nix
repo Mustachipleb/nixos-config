@@ -136,6 +136,10 @@
     liquidctl
 
     nodejs_24
+
+    # Vulnerability scanning
+    syft
+    grype
   ];
 
   # Use native wayland for chromium apps (Electron etc)
