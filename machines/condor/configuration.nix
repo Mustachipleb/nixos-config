@@ -73,6 +73,7 @@
     packages = with pkgs; [
       nh
       git
+      screen
     ];
 
     openssh.authorizedKeys.keys = [
