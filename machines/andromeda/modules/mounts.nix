@@ -30,4 +30,5 @@ in
   fileSystems."/mnt/media" = mkSshfs "mustachio@192.168.1.112:/media";
   fileSystems."/mnt/backups" = mkSshfs "mustachio@192.168.1.112:/Backups";
   fileSystems."/mnt/circinus" = mkSshfs "mustachio@192.168.1.12:/home/mustachio";
+  fileSystems."/mnt/condor" = mkSshfs "mustachio@192.168.1.20:/home/mustachio";
 }

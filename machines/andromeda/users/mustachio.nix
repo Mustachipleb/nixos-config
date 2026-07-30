@@ -191,6 +191,12 @@ in
         identityFile = "~/.ssh/id_ed25519";
         identitiesOnly = true;
       };
+      condor = {
+        hostname = "192.168.1.20";
+        user = "root";
+        identityFile = "~/.ssh/id_ed25519";
+        identitiesOnly = true;
+      };
     };
   };
 

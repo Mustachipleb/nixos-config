@@ -194,6 +194,23 @@
             (mkHomeManagerModule { users = { }; })
           ];
         };
+
+        condor = mkHost {
+          modules = [
+            ./machines/condor/configuration.nix
+            agenix.nixosModules.default
+            home-manager.nixosModules.home-manager
+            (mkHomeManagerModule {
+              users.mustachio = import ./machines/condor/users/mustachio.nix;
+              sharedModules = [
+                agenix.homeManagerModules.default
+                self.homeManagerModules.shell
+                self.homeManagerModules.git
+              ];
+              backupFileExtension = "hm-backup";
+            })
+          ];
+        };
       };
 
       checks.${system} = {
