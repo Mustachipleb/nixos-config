@@ -16,6 +16,8 @@
     "flakes"
   ];
 
+  nixpkgs.config.allowUnfree = true;
+
   boot.loader.grub.enable = true;
   boot.loader.grub.efiSupport = true;
   boot.loader.grub.device = "nodev";
@@ -52,12 +54,14 @@
       enable = false;
     };
     daemon.settings = {
+      features.cdi = true;
       hosts = [
         "unix:///var/run/docker.sock"
         "tcp://0.0.0.0:2375"
       ];
     };
   };
+  hardware.nvidia-container-toolkit.enable = true;
 
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
@@ -133,13 +137,31 @@
   };
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [
-    80
-    443
-  ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
-  # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall = {
+    enable = true;
+    allowedTCPPorts = [
+      80
+      443
+      8123 # Home assistant
+    ];
+  };
+
+  # Enable OpenGL
+  hardware.graphics = {
+    enable = true;
+  };
+
+  # Load nvidia driver for Xorg and Wayland
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+    open = false;
+    nvidiaSettings = false;
+    package = config.boot.kernelPackages.nvidiaPackages.legacy_580;
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
