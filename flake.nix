@@ -171,6 +171,7 @@
         circinus = mkHost {
           modules = [
             ./machines/circinus/configuration.nix
+            self.nixosModules.powerManagement
             home-manager.nixosModules.home-manager
             (mkHomeManagerModule {
               users.mustachio = import ./machines/circinus/users/mustachio.nix;

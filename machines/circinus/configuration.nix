@@ -22,6 +22,11 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
+  boot.kernelParams = [
+    "intel_idle.max_cstate=1"
+    "processor.max_cstate=1"
+  ];
+
   services.fstrim.enable = true;
 
   networking.hostName = "circinus"; # Define your hostname.
@@ -137,12 +142,20 @@
     path = [ pkgs.docker ];
   };
 
-  systemd.sleep.settings.Sleep = {
-    AllowSuspend = false;
-    AllowHibernation = false;
-    AllowHybridSleep = false;
-    AllowSuspendThenHibernate = false;
+  drlg.powerManagement = {
+    enable = true;
+
+    preventSleep = true;
+    preventHddSpindown = false;
+    disableUsbAutosuspend = true;
+
+    disablePowertopAutoTune = false;
+    disableTlp = true;
+    restrictCpuCStates = true;
   };
+
+  # Persistent journal so logs survive reboots
+  services.journald.extraConfig = "Storage=persistent";
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
