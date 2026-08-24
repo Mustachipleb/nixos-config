@@ -181,6 +181,7 @@
   };
 
   # Display config
+  home.file.".config/monitors.xml".force = true;
   home.file.".config/monitors.xml".text = ''
     <monitors version="2">
       <configuration>
