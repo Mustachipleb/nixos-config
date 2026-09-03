@@ -63,6 +63,27 @@
   };
   hardware.nvidia-container-toolkit.enable = true;
 
+  # TODO: Include the script in the repo
+  systemd.services.docker-backup = {
+    description = "Daily Docker Backup";
+    script = ''
+      /home/mustachio/sync-docker.sh
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+    };
+  };
+
+  systemd.timers.docker-backup = {
+    wantedBy = [ "timers.target" ];
+    timerConfig = {
+      OnCalendar = "*-*-* 05:00:00";
+      Persistent = false;
+      Unit = "docker-backup.service";
+    };
+  };
+
   # Set your time zone.
   time.timeZone = "Europe/Brussels";
 
