@@ -66,6 +66,12 @@
   # TODO: Include the script in the repo
   systemd.services.docker-backup = {
     description = "Daily Docker Backup";
+    path = with pkgs; [
+      docker
+      rsync
+      gzip
+      findutils
+    ];
     script = ''
       /home/mustachio/sync-docker.sh
     '';
