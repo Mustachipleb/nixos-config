@@ -65,7 +65,13 @@
   };
   hardware.nvidia-container-toolkit.enable = true;
 
-  # TODO: Include the script in the repo
+  age.secrets = {
+    ".mysql.cnf" = {
+      file = ./secrets/mysql.age;
+      path = "/home/mustachio/.mysql.cnf";
+    };
+  };
+
   systemd.services.docker-backup = {
     description = "Daily Docker Backup";
     path = with pkgs; [
@@ -75,7 +81,40 @@
       findutils
     ];
     script = ''
-      /home/mustachio/sync-docker.sh
+      #!/bin/sh
+      set -euo pipefail
+
+      COMPOSE_DIR="/home/mustachio/docker"
+      BACKUP_SRC="/home/mustachio/docker/"
+      BACKUP_DST="/mnt/backups/docker/"
+      EXCLUDES="/home/mustachio/excluded-docker.txt"
+      BACKUP_DB_DIR="/home/mustachio/docker/databases/backups"
+
+      cd "$COMPOSE_DIR"
+
+      echo "Backup started at $(date)"
+
+      timestamp=$(date +"%Y%m%d_%H%M%S")
+      echo "Backing up immich-postgres"
+      docker exec immich-postgres pg_dumpall -U postgres | gzip > /home/mustachio/docker/databases/backups/immich_postgres_''${timestamp}.tar.gz
+      echo "Backing up postgres"
+      docker exec postgres pg_dumpall -U postgres | gzip > /home/mustachio/docker/databases/backups/postgres_''${timestamp}.tar.gz
+      echo "Backing up mysql"
+      docker exec mysql mysqldump --defaults-extra-file=/home/mustachio/.mysql.cnf --all-databases --single-transaction --routines --triggers --events --set-gtid-purged=OFF | gzip > /home/mustachio/docker/databases/backups/mysql_backup_$(date +%Y%m%d_%H%M%S).sql.gz
+
+      echo "Stopping Docker Compose stack..."
+      docker compose -f docker-compose-t2.yml down
+
+      # Ensure containers come back up even if rsync fails
+      trap 'echo "Starting Docker Compose stack..."; docker compose -f docker-compose-t2.yml up -d' EXIT
+
+      rsync -avK --copy-unsafe-links --ignore-missing-args --delete --exclude-from="$EXCLUDES" "$BACKUP_SRC" "$BACKUP_DST"
+
+      echo "Pruning old database backups..."
+      find "$BACKUP_DB_DIR" -maxdepth 1 -type f \( -name "postgres_*.gz" -o -name "mysql_*.gz" -o -name "immich_postgres_*.gz" \) -mtime +7 -delete
+
+      echo "Backup completed successfully. ($(date))"
+      date -Is > "''${BACKUP_DST}.backup"
     '';
     serviceConfig = {
       Type = "oneshot";
