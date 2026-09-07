@@ -197,6 +197,9 @@
         };
 
         condor = mkHost {
+          specialArgs = {
+            inherit agenix system;
+          };
           modules = [
             ./machines/condor/configuration.nix
             self.nixosModules.powerManagement

@@ -2,6 +2,8 @@
   config,
   lib,
   pkgs,
+  agenix,
+  system,
   ...
 }:
 
@@ -114,7 +116,10 @@
     shell = pkgs.zsh;
   };
 
-  environment.systemPackages = with pkgs; [ hdparm ];
+  environment.systemPackages = with pkgs; [
+    hdparm
+    agenix.packages."${system}".default
+  ];
 
   # Enable the OpenSSH daemon.
   services.openssh = {
