@@ -100,7 +100,16 @@
       echo "Backing up postgres"
       docker exec postgres pg_dumpall -U postgres | gzip > /home/mustachio/docker/databases/backups/postgres_''${timestamp}.tar.gz
       echo "Backing up mysql"
-      docker exec mysql mysqldump --defaults-extra-file=/home/mustachio/.mysql.cnf --all-databases --single-transaction --routines --triggers --events --set-gtid-purged=OFF | gzip > /home/mustachio/docker/databases/backups/mysql_backup_$(date +%Y%m%d_%H%M%S).sql.gz
+      MYSQL_ROOT_PASSWORD="$(docker exec mysql printenv MYSQL_ROOT_PASSWORD)"
+      docker exec --user root mysql env MYSQL_PWD="$MYSQL_ROOT_PASSWORD" mysqldump \
+        --user=root \
+        --all-databases \
+        --single-transaction \
+        --routines \
+        --triggers \
+        --events \
+        --set-gtid-purged=OFF \
+        | gzip > /home/mustachio/docker/databases/backups/mysql_backup_''${timestamp}.sql.gz
 
       echo "Stopping Docker Compose stack..."
       docker compose -f docker-compose-t2.yml down
@@ -111,10 +120,31 @@
       rsync -avK --copy-unsafe-links --ignore-missing-args --delete --exclude-from="$EXCLUDES" "$BACKUP_SRC" "$BACKUP_DST"
 
       echo "Pruning old database backups..."
-      find "$BACKUP_DB_DIR" -maxdepth 1 -type f \( -name "postgres_*.gz" -o -name "mysql_*.gz" -o -name "immich_postgres_*.gz" \) -mtime +7 -delete
+      find "$BACKUP_DB_DIR" -maxdepth 1 -type f \( -name "postgres_*.gz" -o -name "mysql_backup_*.gz" -o -name "immich_postgres_*.gz" \) -mtime +7 -delete
 
       echo "Backup completed successfully. ($(date))"
       date -Is > "''${BACKUP_DST}.backup"
+    '';
+    serviceConfig = {
+      Type = "oneshot";
+      User = "root";
+      StandardOutput = "journal";
+      StandardError = "journal";
+      RuntimeMaxSec = "2h";
+      OnFailure = [ "notify-backup-failure.service" ];
+    };
+  };
+
+  systemd.services.notify-backup-failure = {
+    path = with pkgs; [
+      curl
+      hostname
+    ];
+    script = ''
+      curl -fsS \
+        -H "Title: docker-backup failed" \
+        -d "Backup failed on $(hostname) at $(date -Is). Check journalctl -u docker-backup" \
+        https://ntfy.sh/dragonlegion-be-status
     '';
     serviceConfig = {
       Type = "oneshot";
