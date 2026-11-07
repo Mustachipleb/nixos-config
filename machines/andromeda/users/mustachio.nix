@@ -161,7 +161,7 @@ in
 
       editors = {
         webstorm = {
-          version = "2026.2.3";
+          version = "2026.3";
           plugins = [
             "nix-idea"
             "org.jetbrains.junie"
@@ -173,6 +173,7 @@ in
         };
 
         rider = {
+          enable = false;
           version = "2026.2.3";
           plugins = [
             "org.jetbrains.junie"
