@@ -73,6 +73,7 @@ let
     usbutils # lsusb
 
     gitkraken
+    github-copilot-cli
 
     zsh-powerlevel10k
     meslo-lgs-nf
@@ -87,7 +88,7 @@ let
     prismlauncher
 
     httptoolkit
-    libreoffice-fresh
+    libreoffice
   ];
 in
 {
