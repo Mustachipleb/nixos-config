@@ -186,6 +186,19 @@ in
         ];
         Default = "Kagi";
       };
+
+      ClearOnShutdown = {
+        BrowsingHistoryAndDownloads = false;
+        CookiesAndStorage = true;
+        Cache = true;
+        FormData = true;
+        SiteSettings = false;
+        Exceptions = [
+          "https://youtu.be"
+          "https://youtube.com"
+          "https://www.youtube.com"
+        ];
+      };
     };
 
     profiles = {
