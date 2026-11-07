@@ -99,7 +99,6 @@
   # TODO: Decommission samba in favour of a fuse mount
   services.samba = {
     enable = true;
-    securityType = "user";
     openFirewall = true;
     settings = {
       global = {

@@ -182,21 +182,34 @@ in
 
   programs.ssh = {
     enable = true;
+    enableDefaultConfig = false;
 
-    settings."*".AddKeysToAgent = "yes";
-
-    matchBlocks = {
-      circinus = {
-        hostname = "192.168.1.12";
-        user = "root";
-        identityFile = "~/.ssh/id_ed25519";
-        identitiesOnly = true;
+    settings = {
+      "*" = {
+        ForwardAgent = false;
+        AddKeysToAgent = "yes";
+        Compression = false;
+        ServerAliveInterval = 0;
+        ServerAliveCountMax = 3;
+        HashKnownHosts = false;
+        UserKnownHostsFile = "~/.ssh/known_hosts";
+        ControlMaster = "no";
+        ControlPath = "~/.ssh/master-%r@%n:%p";
+        ControlPersist = "no";
       };
-      condor = {
-        hostname = "192.168.1.20";
-        user = "root";
-        identityFile = "~/.ssh/id_ed25519";
-        identitiesOnly = true;
+
+      "circinus" = {
+        HostName = "192.168.1.12";
+        User = "root";
+        IdentityFile = "~/.ssh/id_ed25519";
+        IdentitiesOnly = true;
+      };
+
+      "condor" = {
+        HostName = "192.168.1.20";
+        User = "root";
+        IdentityFile = "~/.ssh/id_ed25519";
+        IdentitiesOnly = true;
       };
     };
   };
