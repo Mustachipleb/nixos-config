@@ -215,7 +215,7 @@ in
     };
   };
 
-  config.stylix.targets.firefox.profileNames = [ "default" ];
+  stylix.targets.firefox.profileNames = [ "default" ];
 
   age.secrets = {
     "ublock.config.txt" = {
