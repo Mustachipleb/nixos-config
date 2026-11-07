@@ -108,7 +108,7 @@
           "proton-mail.desktop"
           "steam.desktop"
           "spotify.desktop"
-          "discord.desktop"
+          "vesktop.desktop"
           "signal.desktop"
           "webstorm.desktop"
           "gitkraken.desktop"

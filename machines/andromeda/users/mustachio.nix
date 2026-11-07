@@ -72,11 +72,6 @@ let
     pciutils # lspci
     usbutils # lsusb
 
-    # If it doesn't start, make sure "enableHardwareAcceleration" = false in .config/discord/settings.json
-    (discord.override {
-      withOpenASAR = true;
-      withVencord = true;
-    })
     gitkraken
 
     zsh-powerlevel10k
@@ -121,11 +116,26 @@ in
     ];
   };
 
+  programs.vesktop = {
+    enable = true;
+
+    vencord.settings = {
+      autoUpdate = true;
+      autoUpdateNotification = true;
+      notifyAboutUpdates = true;
+
+      plugins = {
+        ClearURLs.enabled = true;
+        FixYoutubeEmbeds.enabled = true;
+      };
+    };
+  };
+
   stylix.targets.spicetify.colors.override = {
     base04 = "f9cc6c"; # Make yellow great again
   };
 
-  stylix.targets.vencord = {
+  stylix.targets.vesktop = {
     enable = true;
     colors.override = {
       base0B = "f9cc6c"; # Make yellow great again
