@@ -197,6 +197,12 @@ in
           "https://youtu.be"
           "https://youtube.com"
           "https://www.youtube.com"
+          "https://dragonlegion.be"
+          "https://www.dragonlegion.be"
+          "https://watch.dragonlegion.be"
+          "https://request.dragonlegion.be"
+          "https://homeassistant.dragonlegion.be"
+          "https://auth.dragonlegion.be"
         ];
       };
     };
