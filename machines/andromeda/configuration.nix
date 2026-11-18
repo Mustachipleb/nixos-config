@@ -134,6 +134,7 @@
     lshw
     nvtopPackages.nvidia
     liquidctl
+    openrgb-with-all-plugins
 
     nodejs_24
 
@@ -148,6 +149,14 @@
   # Thermals
   services.thermald.enable = true;
   programs.coolercontrol.enable = true;
+
+  services.hardware.openrgb = {
+    enable = true;
+    package = pkgs.openrgb-with-all-plugins;
+    motherboard = "amd";
+  };
+  boot.kernelModules = [ "i2c-dev" ];
+  hardware.i2c.enable = true;
 
   virtualisation.docker.enable = true;
 
